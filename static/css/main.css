@@ -1,0 +1,198 @@
+html, body {
+    font-size: 16px;
+}
+
+img {
+    max-width: 100%;
+}
+
+
+#top h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #fff;
+}
+#top p, #team p {
+    color: #b2c5c2;
+}
+
+/* button coloring */
+.btn-primary{
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.btn-outline-primary {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.card a {
+    color: var(--accent);
+    text-decoration:none;
+}
+
+
+/* coloring small section headers*/
+.section-header {
+    color: var(--accent) !important;
+    text-transform: uppercase !important;
+    font-weight: 700;
+}
+
+/* styling for each section*/
+#team, #research{
+    background-color: #343a40;;
+    color: #fff;
+}
+
+#team h5{
+    color: #fff;
+}
+#team table{
+    color: #fff !important;
+}
+
+#tile {
+    text-decoration: none;
+    color: #fff;
+}
+
+#features, #publications, #description{
+    background-color: #f0f0f0;
+}
+
+#contact .card p,h5,address{
+    color: #000;
+}
+
+
+
+/* Navigation icons */
+
+.navbar-icon {
+    font-size: 125%;
+    display: inline-block !important;
+    margin-bottom: -6px;
+    margin-top: -6px;
+}
+
+.navbar-scrolled {
+    background: rgba(4, 4, 4, 0.95) !important;
+}
+
+.navbar-bg-normal {
+    background: rgba(4, 4, 4);
+}
+.navbar-bg-home {
+    background: rgba(4, 4, 4);
+}
+/* if desktop size & larger: make header transparent.*/
+/*@media (min-width: 992px) {
+    .navbar-bg-home {
+        background: transparent;
+    }
+ }
+ */
+
+
+
+/* Copyright message */
+
+.copyright {
+    margin: 15px 0;
+}
+
+/* Paginator */
+
+.pages {
+    padding: 15px 0;
+}
+
+.pages-icon {
+    padding: 0 15px;
+}
+
+/* List item for posts/projects */
+
+.item {
+    padding: 10px 0;
+}
+
+.item-tag {
+    background-color: var(--accent);
+}
+
+
+/* Colored borders at top/bottom of page */
+/*
+.navbar {
+    border-top: var(--border-width) solid var(--accent);
+}
+*/
+footer {
+    border-bottom: var(--border-width) solid var(--accent);
+    text-align: center
+}
+
+.feature-icon {
+   padding: 1rem 0;
+   text-align: center;
+   font-size: 10em;
+   --fa-secondary-color: rgb(212,115,62);
+   --fa-secondary-opacity: 1;
+}
+
+#docmenu a{
+    text-decoration: none;
+}
+#docmain pre{
+        overflow: auto;
+        padding: 1rem;
+        background: #f4f6f8;
+        white-space: pre-wrap;
+        border: 1px solid #f0f0f0;
+        border-radius: 0.2rem;
+}
+
+#docmain table {
+    border-collapse: collapse;
+    border: 1px solid #f0f0f0;
+    width: 100%;
+  }
+  
+  #docmain  th, #docmain 
+  td {
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+    padding: .4rem;
+  }
+  
+  #docmain tr:nth-child(even) th,#docmain  tr:nth-child(even)
+  td {
+    background: #f8f8f8;
+  }
+  
+  #docmain th {
+    background: #eee;
+    font-weight: bold;
+  }
+
+#docmain code {
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 0.95rem;
+    padding: .2rem;
+    border-radius: .2rem;
+    color:black
+  }
+#docmain h1, #docmain h2, #docmain h3, #docmain h4{
+    font-weight: bold;
+    margin: revert;
+    font-size:revert;
+}

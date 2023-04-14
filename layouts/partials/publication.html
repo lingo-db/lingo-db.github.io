@@ -1,0 +1,43 @@
+<div class="card">
+        <a class="card-header d-flex justify-content-between align-items-center" id="heading{{.ID}}"
+            data-bs-toggle="collapse" data-bs-target="#collapse{{.ID}}" aria-expanded="true"
+            aria-controls="collapse{{.ID}}"
+            >
+            <div class='d-block'>
+                <h5 class='font-weight-bold mb-0'>
+                    {{ .Title }}
+                </h5>
+                <p class="mb-0">
+                   <strong>{{.ConferenceAbbrv}}</strong> | {{ if gt (len .Author) 2 }} {{ delimit .Author ", " ", and " }} {{else}} {{ delimit .Author " and " }} {{end}} | {{ dateFormat "January 2, 2006" .Date }}
+                </p>
+            </div>
+            <div>
+                <i class="fa fa-chevron-down ml-3"></i>
+            </div>
+
+        </a>
+        <div id="collapse{{.ID}}" class="collapse" aria-labelledby="heading{{.ID}}">
+            <div class="card-body">
+                <p class="font-weight-bold">Abstract</p>
+                <p>{{replace .Abstract "\n" "<br />" | safeHTML}}</p>
+                <div class='d-flex align-items-end'>
+                    <a class="btn-link me-auto" {{if isset . "ConferenceLink"}} href="{{.ConferenceLink}}" }} {{end}} target="_blank" >
+                        {{.ConferenceName}}
+                    </a>
+
+                    {{if isset . "PDFLink" | and (not (eq .PDFLink "")) }}
+                    <a class='btn btn-outline-primary btn-sm'
+                            href='{{.PDFLink}}' target="_blank">
+                            Full Text
+                    </a>
+                    {{end}}
+                    {{if isset . "CiteLink" | and (not ( eq .CiteLink "")) }}
+                    <a class='btn btn-link btn-sm'
+                            href='{{.CiteLink}}' target="_blank">
+                            Cite
+                    </a>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+</div>

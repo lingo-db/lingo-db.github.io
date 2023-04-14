@@ -1,0 +1,64 @@
+{{ define "main" }}
+{{ partial "header" . }}
+<h2>docs</h2>
+
+<main>
+    <div class="container pt-4"  id="docmenu">
+        <div class="row">
+            <div class="col-lg-2">
+                <h4 class="border-bottom">
+                    <a href="{{ absURL "docs" }}" style="color:black;font-weight:bold">Documentation</a>
+                    
+                </h4>
+                    {{ $permalink := .Page.Permalink }}
+                    <ul class="list-unstyled ps-0">
+
+                        {{ range readDir "/content/docs" }}
+                            {{ $baseName := (strings.TrimSuffix (path.Ext .Name) .Name) }}
+                            {{ $path := (lower $baseName) | printf "docs/%s"  | printf "%s" }}
+                            {{ $readableName := replace (substr $baseName 3) "_" " " }}
+                            {{ if eq (substr $baseName 2 1) "_"}}
+                                {{if .IsDir }}
+                                    {{ $nestedDir := .Name | printf "/content/docs/%s"}}
+                                    {{ $directoryBaseName := lower $baseName }}
+
+                                    <li class="mb-1 border-bottom">
+                                        <a href="{{ absURL $path }}">{{ $readableName  }}</a>
+                                        {{ if hasPrefix $permalink ( absURL $path)}}
+                                        <div>
+                                            <ul class="list-unstyled ps-3">
+                                                {{ range readDir $nestedDir }}
+                                                    {{ $baseName := (strings.TrimSuffix (path.Ext .Name) .Name) }}
+                                                    {{ $path := (lower $baseName) | printf "docs/%s/%s" $directoryBaseName  | printf "%s" }}
+                                                    {{ $readableName := replace (substr $baseName 3) "_" " " }}
+                                                    {{ if eq (substr $baseName 2 1) "_"}}
+                                                        <li><a href="{{ absURL $path }}" class="link-secondary">{{ $readableName }}</a></li>
+                                                    {{ end }}
+                                                {{ end }}
+                                            </ul>
+                                        </div>
+                                        {{ end }}
+                                    </li>
+                                {{else}}
+                                    <li class="mb-1  border-bottom">
+                                        <a href="{{  absURL $path }}">{{ $readableName  }}</a>
+                                    </li>
+                                {{end}}
+                            {{end}}
+                        {{ end }}
+                    </ul>
+            </div>
+
+
+            <div class="col-10 bg-white" id="docmain">
+                {{.Content}}
+
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+{{ partialCached "footer" . }}
+{{end}}

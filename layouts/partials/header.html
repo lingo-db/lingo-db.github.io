@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg navbar-dark {{ if eq .Page.IsHome true}} {{"navbar-bg-home"}} {{else}} {{"navbar-bg-normal"}} {{end}} fixed-top" id='navbar'>
+    <div class='container'>
+        <a class="navbar-brand" href="/">
+            <img src="{{ absURL "images/lingodb-logo-white.svg"}}" width="120" height="40" alt="LingoDB Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            {{if not .Page.IsHome}}
+                {{$.Scratch.Set "pageType" "/"}}
+            {{end}}
+            {{ if .Site.Menus.main }}
+            <ul class="navbar-nav me-auto">
+                {{ range sort .Site.Menus.main }}
+                <li class='nav-item'>
+                    <a class='nav-link btn btn-link ' href="{{$.Scratch.Get "pageType"}}{{.URL}}">
+                    {{ .Name }} 
+                    </a>
+                </li>
+                {{ end }}
+            </ul>
+            {{end}}
+            {{ if .Site.Menus.icon }}
+            {{ if not (in .Section "interface") }}
+            <a class='btn btn-primary btn-sm' href='https://github.com/lingo-db/lingo-db'>
+                <i class="fa-brands fa-github"></i> Code
+            </a>
+            
+            {{end}}
+
+            <ul class="navbar-nav d-block ml-2 py-2">
+                {{ range sort .Site.Menus.icon }}
+                <li class="nav-item navbar-icon">
+                    <a href="{{ .URL }}" target="_blank" class='nav-link'><i class="fa fa-{{ .Name }} "></i></a>
+                </li>
+                {{ end }}
+            </ul>
+            {{end}}
+        </div>
+    </div>
+</nav>

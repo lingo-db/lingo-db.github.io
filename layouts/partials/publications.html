@@ -1,0 +1,39 @@
+<div class='row mb-5 pb-5 justify-content-center'>
+    <h1 class="col-md-8 col-12 text-center">
+       Understand LingoDB
+    </h1>
+</div>
+
+<div class="row mt-5 d-flex justify-content-center">
+    <div class="col-md-12">
+        {{range $index, $element := .Site.Data.publications}}
+            <div class='d-flex align-items-middle'>
+                <h3 style='text-transform: capitalize;'>{{ $index | replaceRE "^\\d+-" "" | humanize }}</h3>
+            </div>
+            <hr>
+            <div id="{{ $index }}" class='mb-5'>
+                {{$.Scratch.Set "currentYear" 0}}
+                {{range sort $element "Date" "desc"}}
+                    {{if eq ($.Scratch.Get "currentYear") (dateFormat "2006" .Date)}}
+                        {{partial "publication.html" .}}
+                    {{else}}
+                        {{$.Scratch.Set "currentYear" (dateFormat "2006" .Date)}}
+                        <p class="ps-1 my-3 font-weight-bold section-header">{{$.Scratch.Get "currentYear"}}</h5>
+                        {{partial "publication.html" .}}
+                    {{end}}
+                {{end}}
+            </div>
+        {{end}}
+        <div class='d-flex align-items-middle'>
+            <h3 style='text-transform: capitalize;'>Other Resources</h3>
+        </div>
+        <hr>
+        <div  class='mb-5'>
+            <!--<a class="btn btn-lg " href="{{ absURL "docs" }}"><i class="fa-solid fa-book"></i> Documentation</a>-->
+            <a class="btn btn-lg " href="{{ absURL "docs" }}"><i class="fa-brands fa-github"></i> Github Repository</a>
+
+        </div>
+    </div>
+</div>
+
+

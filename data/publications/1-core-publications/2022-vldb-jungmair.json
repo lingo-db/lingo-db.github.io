@@ -1,7 +1,7 @@
 {
 	"ID": "2023-vldb-jungmair",
 	"Title": "Designing an open framework for query optimization and compilation",
-	"Author": ["Michael Jungmair", "Jana Giceva"],
+	"Author": ["Michael Jungmair","André Kohn", "Jana Giceva"],
 	"Date": "2022-09-05",
 	"ConferenceAbbrv": "VLDB 2022",
 	"ConferenceName": "48th International Conference on Very Large Data Bases (VLDB 2022)",

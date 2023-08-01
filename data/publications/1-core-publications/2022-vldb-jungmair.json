@@ -1,5 +1,5 @@
 {
-	"ID": "2023-vldb-jungmair",
+	"ID": "2022-vldb-jungmair",
 	"Title": "Designing an open framework for query optimization and compilation",
 	"Author": ["Michael Jungmair","André Kohn", "Jana Giceva"],
 	"Date": "2022-09-05",

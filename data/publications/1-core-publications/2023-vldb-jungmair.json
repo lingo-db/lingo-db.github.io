@@ -1,6 +1,6 @@
 {
 	"ID": "2023-vldb-jungmair",
-	"Title": "Designing an open framework for query optimization and compilation",
+	"Title": "Declarative Sub-Operators for Universal Data Processing",
 	"Author": ["Michael Jungmair", "Jana Giceva"],
 	"Date": "2023-08-28",
 	"ConferenceAbbrv": "VLDB 2023",

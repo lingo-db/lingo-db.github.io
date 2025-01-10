@@ -1,0 +1,49 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.heroBanner {
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.darkerSection {
+  background-color: #f7f7f7;
+  padding: 2em;
+
+}
+
+html[data-theme='dark'] .darkerSection {
+  background-color: #33363b;
+}
+
+.lightSection {
+  padding: 2em;
+}
+
+.custom-rounded-circle {
+  border-radius: 50%; /* Makes the element circular */
+  margin-bottom: 1.5rem; /* Adds bottom margin */
+  width: 100px; /* Example width, adjust as needed */
+  height: 100px; /* Same as width for a perfect circle */
+  background-color: #007bff; /* Example background color */
+  display: flex; /* Optional: To center content */
+  justify-content: center; /* Optional: To center content */
+  align-items: center; /* Optional: To center content */
+  color: white; /* Optional: For contrast with background */
+}

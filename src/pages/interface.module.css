@@ -1,0 +1,7 @@
+.webinterface_container{
+    height: 100%;
+    width: 100%
+}
+.webinterface_main{
+position: fixed; top: 70px; bottom: 0; left: 0; right: 0;
+}

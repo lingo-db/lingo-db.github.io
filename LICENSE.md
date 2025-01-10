@@ -1,3 +1,6 @@
+The images contained in static/img are copyrighted and all rights retained. 
+This remainder of this repository is licensed under the following license.
+
 The MIT License (MIT)
 
 Copyright (c) 2017 Calin Tataru

@@ -75,6 +75,11 @@ const config = {
             position: 'left',
             label: 'Docs',
           },
+          {
+            type: 'docsVersionDropdown',
+            position: 'right',
+            dropdownActiveClassDisabled: true,
+          },
           //{to: '/blog', label: 'Blog', position: 'left'},
           {
             href: 'https://github.com/lingo-db/lingo-db',

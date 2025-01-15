@@ -11,11 +11,7 @@ pip install lingodb
 ```
 
 ## Docker Image
-Either use the 
-* [prebuilt docker image](https://github.com/lingo-db/lingo-db/pkgs/container/lingo-db)
-* or build the docker image yourself using `make build-docker`
-
-The docker image then contains all the command line tools under `/build/lingodb/`
+You can build the docker image yourself using `make build-docker`
 
 ## Building from source
 1. Ensure you have a machine with sufficient compute power and space

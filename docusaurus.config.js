@@ -42,7 +42,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/lingo-db/docs/tree/main/',
+            'https://github.com/lingo-db/lingo-db.github.io/tree/main/',
         },
         blog: false,
         theme: {

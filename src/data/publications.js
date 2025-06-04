@@ -1,8 +1,8 @@
-export const primaryPublications=[
+export const primaryPublications = [
     {
         "ID": "2022-vldb-jungmair",
         "Title": "Designing an open framework for query optimization and compilation",
-        "Author": ["Michael Jungmair","André Kohn", "Jana Giceva"],
+        "Author": ["Michael Jungmair", "André Kohn", "Jana Giceva"],
         "Date": "2022-09-05",
         "ConferenceAbbrv": "VLDB 2022",
         "ConferenceName": "48th International Conference on Very Large Data Bases (VLDB 2022)",
@@ -23,5 +23,18 @@ export const primaryPublications=[
         "PDFLink": "https://db.in.tum.de/~jungmair/papers/p2799-jungmair.pdf",
         "CiteLink": "#",
         "Abstract": `Data processing systems face the challenge of supporting increasingly diverse workloads efficiently. At the same time, they are already bloated with internal complexity, and it is not clear how new hardware can be supported sustainably. In this paper, we aim to resolve these issues by proposing a unified abstraction layer based on declarative sub-operators in addition to relational operators. By exposing this layer to users, they can express their non-relational workloads declaratively with sub-operators. Furthermore, the proposed sub-operators decouple the semantic implementation of operators from the efficient imperative implementation, reducing the implementation complexity for relational operators. Finally, through fine-grained automatic optimizations, the declarative sub-operators allow for automatic morsel-driven parallelism. We demonstrate the benefits not only by providing a specific set of sub-operators but also implementing them in a compiling query engine. With thorough evaluation and analysis, we show that we can support a richer set of workloads while retaining the development complexity low and being competitive in performance even with specialized systems.`
+    },
+    {
+        "ID": "2025-sigmod-demo-jungmair",
+        "Title": "LingoDB-CT: Understanding LingoDB’s Inner Workings",
+        "Author": ["Michael Jungmair"],
+        "Date": "2025-06-22",
+        "ConferenceAbbrv": "SIGMOD 2025 (Demo Paper)",
+        "ConferenceName": "ACM SIGMOD/PODS International Conference on Management of Data",
+        "ConferenceLink": "https://2025.sigmod.org/",
+        "PDFLink": "https://db.in.tum.de/~jungmair/papers/lingodb-ct.pdf",
+        "CiteLink": "#",
+        "Abstract": `While compiling query engines can be highly efficient, especially for complex queries, they also have the reputation of being too difficult to understand, debug, and profile. However, this is not necessarily the case if supported by the right architecture and tools.
+With this demonstration, we want to show this for our own compiling query engine LingoDB. For this purpose, we built an instrumentation and visualization framework called LingoDB-CT, which aggregates data from multiple angles and visualizes it to reveal the bigger picture. Through two interactive demonstration scenarios, using publicly hosted web applications, we show that LingoDB is indeed easy to understand and profile.`
     }
 ]

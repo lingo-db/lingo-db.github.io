@@ -3,7 +3,6 @@
 
 A dialect around sub-operators that manipulate a tuplestream, but state is managed explicitly
 
-[TOC]
 
 ## Operations
 

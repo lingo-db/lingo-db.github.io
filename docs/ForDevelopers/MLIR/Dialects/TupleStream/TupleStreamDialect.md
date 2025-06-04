@@ -3,7 +3,6 @@
 
 A general dialect that adds a tuple strem type
 
-[TOC]
 
 ## Operations
 

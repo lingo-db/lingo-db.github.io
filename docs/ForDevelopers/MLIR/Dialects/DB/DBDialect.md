@@ -7,7 +7,6 @@ Imperative database dialect, defining abstract/non-trivial types and high-level 
 
 Supported types are integers (`i32`/`i64`), floats, bools (`i1`), `Date`, `Timestamp`, `Interval`, `Decimal`, `Char` (fixed-size buffers), and `String` (variable-length buffers). Nullable types are supported using `nullable<...>`; plain `NULL` values can be represented using `nullable<none>`.
 
-[TOC]
 
 ## Operations
 

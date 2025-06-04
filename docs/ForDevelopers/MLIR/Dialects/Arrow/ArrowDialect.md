@@ -8,7 +8,6 @@ The operation implemented by this dialect work directly on the physical memory l
 For example, dates are loaded as integers, strings are loaded as ptr + len, and so on.
 Dealing with logical types is the responsibility of higher-level dialects.
 
-[TOC]
 
 ## Operations
 

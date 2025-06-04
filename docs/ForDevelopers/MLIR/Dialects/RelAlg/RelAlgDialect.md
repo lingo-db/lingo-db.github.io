@@ -3,7 +3,6 @@
 
 A dialect for relational algebra
 
-[TOC]
 
 ## Operations
 

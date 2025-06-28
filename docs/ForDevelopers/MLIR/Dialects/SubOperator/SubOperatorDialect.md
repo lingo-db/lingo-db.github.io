@@ -496,7 +496,7 @@ Effects: `MemoryEffects::Effect{}`
 
 ### `subop.gather` (::lingodb::compiler::dialect::subop::GatherOp)
 
-_Scatter_
+_Gather_
 
 
 Syntax:
@@ -806,6 +806,8 @@ Interfaces: `InferTypeOpInterface`, `StateUsingSubOperator`, `SubOperator`
 
 _Performs a lookup in a state and annotates the result as attribute_
 
+Currently LookupOp returns an optional reference when the state is a map structure.
+It is therefore necessary to combine it with an UnwrapOptionalRefOp
 
 Interfaces: `InferTypeOpInterface`, `ReferenceProducer`, `StateUsingSubOperator`, `SubOperator`
 

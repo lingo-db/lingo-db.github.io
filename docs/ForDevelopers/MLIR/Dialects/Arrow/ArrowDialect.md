@@ -23,7 +23,11 @@ operation ::= `arrow.array.is_valid` $array `,` $offset attr-dict
 ```
 
 
-Interfaces: `InferTypeOpInterface`
+Traits: `AlwaysSpeculatableImplTrait`
+
+Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`
+
+Effects: `MemoryEffects::Effect{}`
 
 #### Operands:
 
@@ -52,7 +56,11 @@ operation ::= `arrow.array.load_bool` $array `,` $offset attr-dict
 
 This special operation is necessary, since Arrow stores boolean values as bitset, and not individual bytes.
 
-Interfaces: `InferTypeOpInterface`
+Traits: `AlwaysSpeculatableImplTrait`
+
+Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`
+
+Effects: `MemoryEffects::Effect{}`
 
 #### Operands:
 
@@ -82,6 +90,12 @@ operation ::= `arrow.array.load_fixed_sized` $array `,` $offset `->` type($value
 Used for loading types that are of fixed size from an arrow array (e.g., integers, floats, decimals, dates, timestamp).
 There are now runtime checks to ensure that the type of the value matches the type of the array, so this operation can be used for any fixed sized type.
 
+Traits: `AlwaysSpeculatableImplTrait`
+
+Interfaces: `ConditionallySpeculatable`, `NoMemoryEffect (MemoryEffectOpInterface)`
+
+Effects: `MemoryEffects::Effect{}`
+
 #### Operands:
 
 | Operand | Description |
@@ -110,7 +124,11 @@ operation ::= `arrow.array.load_variable_size_binary` $array `,` $offset `->` ty
 Used for loading variable sized binary values from an arrow array (e.g., strings, binary data).
 It returns both a pointer to the data and the length of the data.
 
-Interfaces: `InferTypeOpInterface`
+Traits: `AlwaysSpeculatableImplTrait`
+
+Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`
+
+Effects: `MemoryEffects::Effect{}`
 
 #### Operands:
 
@@ -209,7 +227,11 @@ operation ::= `arrow.array_builder.from_ptr` $ptr `->` type($builder) attr-dict
 ```
 
 
-Interfaces: `InferTypeOpInterface`
+Traits: `AlwaysSpeculatableImplTrait`
+
+Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`
+
+Effects: `MemoryEffects::Effect{}`
 
 #### Operands:
 

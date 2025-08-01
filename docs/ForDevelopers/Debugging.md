@@ -19,6 +19,9 @@ For the following instructions, we assume that LingoDB was built in Release mode
   * If yes: debug with this backend. 
   * If not: you should use the [LLVM Debug Backend](#llvm-debug-backend)
 
+## Guide: Quick iteration through standalone CMake projects
+As discussed [here](StandaloneQuery.md), LingoDB can compile SQL queries to C++ queries and create standalone CMake projects that allow for quick iterations, without adapting the compilation pipeline at all.
+
 ## Components for Debugging and Profiling
 ### Location Tracking in MLIR
 In MLIR, every operation is associated with a *Location*, that must be provided during operation creation.

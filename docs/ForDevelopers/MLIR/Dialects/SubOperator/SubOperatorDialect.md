@@ -171,8 +171,8 @@ Interfaces: `SubOperator`
 
 <table>
 <tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
-<tr><td><code>hash_member</code></td><td>::mlir::StringAttr</td><td>string attribute</td></tr>
-<tr><td><code>link_member</code></td><td>::mlir::StringAttr</td><td>string attribute</td></tr>
+<tr><td><code>hash_member</code></td><td>::lingodb::compiler::dialect::subop::MemberAttr</td><td><details><summary></summary><ul><li>References a member in a state, e.g., for specifying the members to sort for etc</li></ul></details></td></tr>
+<tr><td><code>link_member</code></td><td>::lingodb::compiler::dialect::subop::MemberAttr</td><td><details><summary></summary><ul><li>References a member in a state, e.g., for specifying the members to sort for etc</li></ul></details></td></tr>
 </table>
 
 #### Operands:
@@ -513,7 +513,7 @@ Interfaces: `InferTypeOpInterface`, `StateUsingSubOperator`, `SubOperator`
 <table>
 <tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
 <tr><td><code>ref</code></td><td>::lingodb::compiler::dialect::tuples::ColumnRefAttr</td><td></td></tr>
-<tr><td><code>mapping</code></td><td>::mlir::DictionaryAttr</td><td>dictionary of named attribute values</td></tr>
+<tr><td><code>mapping</code></td><td>::lingodb::compiler::dialect::subop::ColumnDefMemberMappingAttr</td><td><details><summary></summary><ul><li>A mapping from members to column definitions, e.g., for scans</li></ul></details></td></tr>
 </table>
 
 #### Operands:
@@ -757,7 +757,7 @@ Interfaces: `ColumnFoldable`, `StateUsingSubOperator`, `SubOperator`
 
 <table>
 <tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
-<tr><td><code>mapping</code></td><td>::mlir::DictionaryAttr</td><td>dictionary of named attribute values</td></tr>
+<tr><td><code>mapping</code></td><td>::lingodb::compiler::dialect::subop::ColumnRefMemberMappingAttr</td><td><details><summary></summary><ul><li>A mapping from column references to members, e.g., for materializing operations</li></ul></details></td></tr>
 </table>
 
 #### Operands:
@@ -887,7 +887,7 @@ Interfaces: `ContainsNestedSubOps`, `SubOperator`
 Syntax:
 
 ```
-operation ::= `subop.loop_continue` `(` $cond_state `:` type($cond_state) `[` $cond_member `]` `)` ($values^ `:` type($values))?  attr-dict
+operation ::= `subop.loop_continue` `(` $cond_state `:` type($cond_state) `[`custom<CustMemberAttr>($cond_member) `]` `)` ($values^ `:` type($values))?  attr-dict
 ```
 
 
@@ -897,7 +897,7 @@ Traits: `Terminator`
 
 <table>
 <tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
-<tr><td><code>cond_member</code></td><td>::mlir::StringAttr</td><td>string attribute</td></tr>
+<tr><td><code>cond_member</code></td><td>::lingodb::compiler::dialect::subop::MemberAttr</td><td><details><summary></summary><ul><li>References a member in a state, e.g., for specifying the members to sort for etc</li></ul></details></td></tr>
 </table>
 
 #### Operands:
@@ -965,7 +965,7 @@ Interfaces: `ColumnFoldable`, `StateUsingSubOperator`, `SubOperator`
 
 <table>
 <tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
-<tr><td><code>mapping</code></td><td>::mlir::DictionaryAttr</td><td>dictionary of named attribute values</td></tr>
+<tr><td><code>mapping</code></td><td>::lingodb::compiler::dialect::subop::ColumnRefMemberMappingAttr</td><td><details><summary></summary><ul><li>A mapping from column references to members, e.g., for materializing operations</li></ul></details></td></tr>
 </table>
 
 #### Operands:
@@ -1220,7 +1220,7 @@ Effects: `MemoryEffects::Effect{}`
 
 <table>
 <tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
-<tr><td><code>mapping</code></td><td>::mlir::DictionaryAttr</td><td>dictionary of named attribute values</td></tr>
+<tr><td><code>mapping</code></td><td>::lingodb::compiler::dialect::subop::ColumnDefMemberMappingAttr</td><td><details><summary></summary><ul><li>A mapping from members to column definitions, e.g., for scans</li></ul></details></td></tr>
 </table>
 
 #### Operands:
@@ -1331,7 +1331,7 @@ Interfaces: `StateUsingSubOperator`, `SubOperator`
 <table>
 <tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
 <tr><td><code>ref</code></td><td>::lingodb::compiler::dialect::tuples::ColumnRefAttr</td><td></td></tr>
-<tr><td><code>mapping</code></td><td>::mlir::DictionaryAttr</td><td>dictionary of named attribute values</td></tr>
+<tr><td><code>mapping</code></td><td>::lingodb::compiler::dialect::subop::ColumnRefMemberMappingAttr</td><td><details><summary></summary><ul><li>A mapping from column references to members, e.g., for materializing operations</li></ul></details></td></tr>
 </table>
 
 #### Operands:
@@ -1379,7 +1379,7 @@ Interfaces: `StateUsingSubOperator`, `SubOperator`
 <table>
 <tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
 <tr><td><code>resultId</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
-<tr><td><code>readState</code></td><td>::mlir::StringAttr</td><td>string attribute</td></tr>
+<tr><td><code>readState</code></td><td>::lingodb::compiler::dialect::subop::MemberAttr</td><td><details><summary></summary><ul><li>References a member in a state, e.g., for specifying the members to sort for etc</li></ul></details></td></tr>
 </table>
 
 #### Operands:
@@ -1407,7 +1407,7 @@ Interfaces: `SubOperator`
 
 <table>
 <tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
-<tr><td><code>member</code></td><td>::mlir::StringAttr</td><td>string attribute</td></tr>
+<tr><td><code>member</code></td><td>::lingodb::compiler::dialect::subop::MemberAttr</td><td><details><summary></summary><ul><li>References a member in a state, e.g., for specifying the members to sort for etc</li></ul></details></td></tr>
 </table>
 
 #### Operands:
@@ -1488,27 +1488,53 @@ Interfaces: `InferTypeOpInterface`, `StateUsingSubOperator`, `SubOperator`
 
 ## Attributes
 
-### StateMembersAttr
+### ColumnDefMemberMappingAttr
 
 
 
-Syntax:
-
-```
-#subop.state_members<
-  mlir::ArrayAttr,   # names
-  mlir::ArrayAttr   # types
->
-```
-
-
+A mapping from members to column definitions, e.g., for scans
 
 #### Parameters:
 
 | Parameter | C++ type | Description |
 | :-------: | :-------: | ----------- |
-| names | `mlir::ArrayAttr` |  |
-| types | `mlir::ArrayAttr` |  |
+| mappingList | `llvm::SmallVector<std::pair<Member, tuples::ColumnDefAttr>>` |  |
+
+### ColumnRefMemberMappingAttr
+
+
+
+A mapping from column references to members, e.g., for materializing operations
+
+#### Parameters:
+
+| Parameter | C++ type | Description |
+| :-------: | :-------: | ----------- |
+| mappingList | `llvm::SmallVector<std::pair<Member, tuples::ColumnRefAttr>>` |  |
+
+### MemberAttr
+
+
+
+References a member in a state, e.g., for specifying the members to sort for etc
+
+#### Parameters:
+
+| Parameter | C++ type | Description |
+| :-------: | :-------: | ----------- |
+| member | `subop::Member` |  |
+
+### StateMembersAttr
+
+
+
+A list of members that are part of the state
+
+#### Parameters:
+
+| Parameter | C++ type | Description |
+| :-------: | :-------: | ----------- |
+| memberList | `llvm::SmallVector<Member>` |  |
 
 ## Types
 

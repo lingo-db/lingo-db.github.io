@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 
 LingoDB relies on three main external dependencies:
 * [LLVM/MLIR 20](https://github.com/llvm/llvm-project)
-* [Apache Arrow 20](https://arrow.apache.org/release/19.0.0.html)
+* [Apache Arrow 20](https://arrow.apache.org/release/20.0.0.html)
 * [Boost Context 1.83](https://www.boost.org/doc/libs/1_83_0/libs/context/doc/html/index.html)
 
 **Additional tools and libraries required:**

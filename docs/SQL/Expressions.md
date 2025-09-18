@@ -86,8 +86,10 @@ Currently only few built-in functions are supported as others simply weren't nec
 | Function       | Description | Example    | Result     |
 |----------------|-------------|------------|------------|
 | `date_part` | extract a part of a date          | `date_part('year','2023-07-11')` | `2023` |
-| `substring` | substring of string        | `substring('hello world',2,5)` | `"ello"` |
+| `substring` \| `substr` | substring of string        | `substring('hello world',2,5)` | `"ello"` |
 | `abs` | absolute value of numer        | `abs(-1.5)` | `1.5` |
 | `upper` | transform string to upper case        | `upper('abc'::string)` | `"ABC"` |
 | `round` | found numer to number of digits       | `round(1.0006,3)` | `1.0010` |
 | `hash` | fast hash function        | `hash(42)` | `539517765266996231` |
+| `date_trunc` | truncates to a specified date part |  `date_trunc('year', '2021-12-08'::date)` |  `1609459200000000000` ([Issue](https://github.com/lingo-db/lingo-db/issues/162)) |
+| `extract` | extract a part from a given date |  `extract(year from '2021-12-08'::date)` |  `2021` |

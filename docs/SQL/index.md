@@ -1,11 +1,21 @@
 ---
-title: SQL
+title: SQL Overview
 ---
 
 LingoDB supports a subset of the SQL query engine that is frequently used for analytical workloads and benchmarks.
-The general syntax is quite close to PostgreSQL
+The general syntax is similar to PostgreSQL.
 
-## Select statement
+
+## Select Statement
+
+The `SELECT` statement is used to query the database. It supports various clauses to filter, group, and order data.
+LingoDB offers two ways to write select queries: classic syntax and pipe-based syntax.
+
+- **[Classic SQL Queries](./SQLQueries.md)**: Use traditional `SELECT ... FROM ... WHERE ...` statements.
+- **[Pipe SQL Queries](./PipeSQL.md)**: Use Google's proposed pipe SQL syntax
+
+[More details on `SELECT` statements](./SQLQueries.md)
+
 ```sql
 select t1.a, sum(x) as c -- scalar expressions, aggregates, sub-queries, window functions, ...
 from t1, t2 left join t3 on  t2.y=t3.y -- relations, (outer joins)
@@ -17,21 +27,25 @@ limit k -- k must be constant
 ```
 
 ## Creating tables
+
+You can create tables using the `CREATE TABLE` statement.
+
+[More details on creating tables](./CreateTables.md)
+
 ```sql
 create table t(
-    -- usual column definitions
     a string,
     b int,
     c decimal(4,2),
     -- ...
-    -- define primary key
     primary key(a,b)
 )
-
 ```
+A list of supported data types can be found [here](./Types.md).
 
 ## Inserting Data
 Data can be inserted using the `INSERT INTO` statement with either a `VALUES` clause or a SQL query:
+[More details on inserting data](./Insert.md)
 ```sql
 insert into t (column, ...) values ('a',...),('b',...)
 insert into t values ('a',...),('b',...)

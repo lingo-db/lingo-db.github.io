@@ -11,6 +11,7 @@ LingoDB relies on three main external dependencies:
 * CMake 3.13.4 or newer
 * Ninja
 * lit (optional, for testing), can be e.g., installed via `pip install lit`
+* flex/bison
 
 We also provide a [Dockerfile](https://github.com/lingo-db/lingo-db/pkgs/container/lingodb-dev) that contains all dependencies and tools required to build LingoDB.
 

@@ -678,7 +678,7 @@ _Operation symbolizes 'in flight' tuple stream -> values => columns_
 Syntax:
 
 ```
-operation ::= `subop.in_flight` $values `:` type($values) `=` `>` custom<CustDefArr>($columns) attr-dict
+operation ::= `subop.in_flight` ($values^ `:` type($values))? `=` `>` custom<CustDefArr>($columns) attr-dict
 ```
 
 
@@ -706,44 +706,6 @@ Effects: `MemoryEffects::Effect{}`
 | Result | Description |
 | :----: | ----------- |
 | `res` | tuple stream type
-
-
-### `subop.in_flight_tuple` (::lingodb::compiler::dialect::subop::InFlightTupleOp)
-
-_Operation symbolizes 'in flight' tuple -> values => columns_
-
-
-Syntax:
-
-```
-operation ::= `subop.in_flight_tuple` $values `:` type($values) `=` `>` custom<CustDefArr>($columns) attr-dict
-```
-
-
-Traits: `AlwaysSpeculatableImplTrait`
-
-Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `SubOperator`
-
-Effects: `MemoryEffects::Effect{}`
-
-#### Attributes:
-
-<table>
-<tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
-<tr><td><code>columns</code></td><td>::mlir::ArrayAttr</td><td>array attribute</td></tr>
-</table>
-
-#### Operands:
-
-| Operand | Description |
-| :-----: | ----------- |
-| `values` | variadic of any type
-
-#### Results:
-
-| Result | Description |
-| :----: | ----------- |
-| `res` | tuple type
 
 
 ### `subop.insert` (::lingodb::compiler::dialect::subop::InsertOp)

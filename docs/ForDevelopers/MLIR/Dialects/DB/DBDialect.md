@@ -105,6 +105,12 @@ operation ::= `db.arrow.load` $array `,` $offset `->` type($res) attr-dict
 ```
 
 
+Traits: `AlwaysSpeculatableImplTrait`
+
+Interfaces: `ConditionallySpeculatable`, `NoMemoryEffect (MemoryEffectOpInterface)`
+
+Effects: `MemoryEffects::Effect{}`
+
 #### Operands:
 
 | Operand | Description |

@@ -301,6 +301,51 @@ Effects: `MemoryEffects::Effect{}`
 | `result` | any type
 
 
+### `db.create_dict` (::lingodb::compiler::dialect::db::CreateDictOp)
+
+_Create dict_
+
+
+Syntax:
+
+```
+operation ::= `db.create_dict` $cmpKeyFn `->` type($dict) attr-dict
+```
+
+
+#### Attributes:
+
+<table>
+<tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
+<tr><td><code>cmpKeyFn</code></td><td>::mlir::SymbolRefAttr</td><td>symbol reference attribute</td></tr>
+</table>
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `dict` | 
+
+
+### `db.create_list` (::lingodb::compiler::dialect::db::CreateListOp)
+
+_Create list_
+
+
+Syntax:
+
+```
+operation ::= `db.create_list` type($list) attr-dict
+```
+
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `list` | 
+
+
 ### `db.derive_truth` (::lingodb::compiler::dialect::db::DeriveTruth)
 
 _Get whether a value is true-ish_
@@ -330,6 +375,232 @@ Effects: `MemoryEffects::Effect{}`
 | Result | Description |
 | :----: | ----------- |
 | `res` | 1-bit signless integer
+
+
+### `db.dict_contains` (::lingodb::compiler::dialect::db::DictContainsOp)
+
+_Check whether dict contains key_
+
+
+Syntax:
+
+```
+operation ::= `db.dict_contains` $dict `:` type($dict) `[` $key `:` type($key) `->` $hash `]` attr-dict
+```
+
+
+Interfaces: `InferTypeOpInterface`
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `dict` | 
+| `key` | any type
+| `hash` | index
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `contains` | 1-bit signless integer
+
+
+### `db.dict_get` (::lingodb::compiler::dialect::db::DictGetOp)
+
+_Get value from dict_
+
+
+Syntax:
+
+```
+operation ::= `db.dict_get` $dict `:` type($dict) `[` $key `:` type($key) `->` $hash`]` `:` type($value) attr-dict
+```
+
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `dict` | 
+| `key` | any type
+| `hash` | index
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `value` | any type
+
+
+### `db.dict_get_iter` (::lingodb::compiler::dialect::db::DictGetIter)
+
+_Get iterator over dict_
+
+
+Syntax:
+
+```
+operation ::= `db.dict_get_iter` $dict `:` type($dict) `->` type($iter) attr-dict
+```
+
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `dict` | 
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `iter` | dict iterator
+
+
+### `db.dict_iter_get_key` (::lingodb::compiler::dialect::db::DictIterGetKey)
+
+_Get key from dict iterator_
+
+
+Syntax:
+
+```
+operation ::= `db.dict_iter_get_key` $iter `:` type($iter) `->` type($key) attr-dict
+```
+
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `iter` | dict iterator
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `key` | any type
+
+
+### `db.dict_iter_get_value` (::lingodb::compiler::dialect::db::DictIterGetValue)
+
+_Get value from dict iterator_
+
+
+Syntax:
+
+```
+operation ::= `db.dict_iter_get_value` $iter `:` type($iter) `->` type($value) attr-dict
+```
+
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `iter` | dict iterator
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `value` | any type
+
+
+### `db.dict_iter_next` (::lingodb::compiler::dialect::db::DictIterNext)
+
+_Move to next element in dict iterator_
+
+
+Syntax:
+
+```
+operation ::= `db.dict_iter_next` $iter `:` type($iter) attr-dict
+```
+
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `iter` | dict iterator
+
+
+### `db.dict_iter_valid` (::lingodb::compiler::dialect::db::DictIterValid)
+
+_Check whether dict iterator is valid_
+
+
+Syntax:
+
+```
+operation ::= `db.dict_iter_valid` $iter `:` type($iter) attr-dict
+```
+
+
+Interfaces: `InferTypeOpInterface`
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `iter` | dict iterator
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `isValid` | 1-bit signless integer
+
+
+### `db.dict_length` (::lingodb::compiler::dialect::db::DictLengthOp)
+
+_Get length of dict_
+
+
+Syntax:
+
+```
+operation ::= `db.dict_length` $dict `:` type($dict) attr-dict
+```
+
+
+Interfaces: `InferTypeOpInterface`
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `dict` | 
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `length` | index
+
+
+### `db.dict_set` (::lingodb::compiler::dialect::db::DictSetOp)
+
+_Set value in dict_
+
+
+Syntax:
+
+```
+operation ::= `db.dict_set` $dict `:` type($dict) `[` $key `:` type($key)  `->` $hash `]` `=` $value `:` type($value) attr-dict
+```
+
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `dict` | 
+| `key` | any type
+| `hash` | index
+| `value` | any type
 
 
 ### `db.div` (::lingodb::compiler::dialect::db::DivOp)
@@ -424,6 +695,100 @@ Effects: `MemoryEffects::Effect{}`
 | Result | Description |
 | :----: | ----------- |
 | `result` | 1-bit signless integer
+
+
+### `db.list_append` (::lingodb::compiler::dialect::db::ListAppendOp)
+
+_Append element to list_
+
+
+Syntax:
+
+```
+operation ::= `db.list_append` $list `:` type($list)  `,` $element `:` type($element) attr-dict
+```
+
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `list` | 
+| `element` | any type
+
+
+### `db.list_get` (::lingodb::compiler::dialect::db::ListGetOp)
+
+_Get element from list_
+
+
+Syntax:
+
+```
+operation ::= `db.list_get` $list `:` type($list) `[` $index `]` `:` type($element) attr-dict
+```
+
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `list` | 
+| `index` | index
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `element` | any type
+
+
+### `db.list_length` (::lingodb::compiler::dialect::db::ListLengthOp)
+
+_Get length of list_
+
+
+Syntax:
+
+```
+operation ::= `db.list_length` $list `:` type($list) attr-dict
+```
+
+
+Interfaces: `InferTypeOpInterface`
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `list` | 
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `length` | index
+
+
+### `db.list_set` (::lingodb::compiler::dialect::db::ListSetOp)
+
+_Set element in list_
+
+
+Syntax:
+
+```
+operation ::= `db.list_set` $list `:` type($list) `[` $index `]` `=` $element `:` type($element) attr-dict
+```
+
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `list` | 
+| `index` | index
+| `element` | any type
 
 
 ### `db.mod` (::lingodb::compiler::dialect::db::ModOp)
@@ -850,6 +1215,70 @@ Syntax:
 | Parameter | C++ type | Description |
 | :-------: | :-------: | ----------- |
 | unit | `TimeUnitAttr` |  |
+
+### DictIterType
+
+dict iterator
+
+Syntax:
+
+```
+!db.dict_iter<
+  mlir::Type,   # keyType
+  mlir::Type   # valueType
+>
+```
+
+Iterator over a dict, yielding key-value pairs.
+
+#### Parameters:
+
+| Parameter | C++ type | Description |
+| :-------: | :-------: | ----------- |
+| keyType | `mlir::Type` |  |
+| valueType | `mlir::Type` |  |
+
+### DictType
+
+
+
+Syntax:
+
+```
+!db.dict<
+  mlir::Type,   # keyType
+  mlir::Type   # valueType
+>
+```
+
+
+
+#### Parameters:
+
+| Parameter | C++ type | Description |
+| :-------: | :-------: | ----------- |
+| keyType | `mlir::Type` |  |
+| valueType | `mlir::Type` |  |
+
+### ListType
+
+
+
+Syntax:
+
+```
+!db.list<
+  mlir::Type   # elementType
+>
+```
+
+
+
+#### Parameters:
+
+| Parameter | C++ type | Description |
+| :-------: | :-------: | ----------- |
+| elementType | `mlir::Type` |  |
 
 ### NullableType
 

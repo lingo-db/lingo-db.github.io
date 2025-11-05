@@ -2120,7 +2120,8 @@ Syntax:
 
 ```
 !subop.table<
-  StateMembersAttr   # members
+  StateMembersAttr,   # members
+  bool   # filtered
 >
 ```
 
@@ -2131,6 +2132,7 @@ Syntax:
 | Parameter | C++ type | Description |
 | :-------: | :-------: | ----------- |
 | members | `StateMembersAttr` |  |
+| filtered | `bool` |  |
 
 ### TableEntryRefType
 

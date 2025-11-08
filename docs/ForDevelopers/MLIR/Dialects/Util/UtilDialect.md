@@ -789,6 +789,29 @@ operation ::= `util.varlen32_cmp` $left `,` $right attr-dict
 | `needs_detailed_eval` | 1-bit signless integer
 
 
+### `util.varlen32_cmp_simple` (::lingodb::compiler::dialect::util::VarLenCmpSimple)
+
+Syntax:
+
+```
+operation ::= `util.varlen32_cmp_simple` $left `,` $right attr-dict
+```
+
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `left` | type representing variable-length data up to 2^31 bytes
+| `right` | type representing variable-length data up to 2^31 bytes
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `eq` | 1-bit signless integer
+
+
 ### `util.varlen32_create` (::lingodb::compiler::dialect::util::CreateVarLen)
 
 Syntax:

@@ -56,7 +56,7 @@ operation ::= `db.and` $vals `:` type($vals) attr-dict
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`
+Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `SupportsNullabilityChange`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -172,7 +172,7 @@ Determine whether a value is in a given range. This is preferred over (and also 
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `ConditionallySpeculatable`, `DB_NeedsNullWrap`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`
+Interfaces: `ConditionallySpeculatable`, `DB_NeedsNullWrap`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `SupportsNullabilityChange`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -244,7 +244,7 @@ operation ::= `db.compare` $predicate $left `:` type($left) `,` $right `:` type(
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `CmpOpInterface`, `ConditionallySpeculatable`, `DB_MaySupportInvalidValues`, `DB_NeedsNullWrap`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`
+Interfaces: `CmpOpInterface`, `ConditionallySpeculatable`, `DB_MaySupportInvalidValues`, `DB_NeedsNullWrap`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `SupportsNullabilityChange`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -957,7 +957,7 @@ Determine whether `val` is included in `vals`; similar to `IN` in SQL.
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `ConditionallySpeculatable`, `DB_NeedsNullWrap`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`
+Interfaces: `ConditionallySpeculatable`, `DB_NeedsNullWrap`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `SupportsNullabilityChange`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -989,7 +989,7 @@ operation ::= `db.or` $vals `:` type($vals) attr-dict
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`
+Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `SupportsNullabilityChange`
 
 Effects: `MemoryEffects::Effect{}`
 

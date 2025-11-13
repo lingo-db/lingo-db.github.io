@@ -20,7 +20,7 @@ operation ::= `relalg.aggregation` $rel custom<CustRefArr>($group_by_cols) `comp
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `Operator`, `UnaryOperator`
+Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `NullColumnTypeChangeable`, `Operator`, `UnaryOperator`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -98,7 +98,7 @@ operation ::= `relalg.antisemijoin` $left `,` $right custom<CustRegion>($predica
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
+Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `NullColumnTypeChangeable`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -156,7 +156,7 @@ operation ::= `relalg.collectionjoin` custom<CustRefArr>($cols) custom<CustDef>(
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
+Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `NullColumnTypeChangeable`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -360,7 +360,7 @@ operation ::= `relalg.fullouterjoin` $left `,` $right custom<CustRegion>($predic
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
+Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `NullColumnTypeChangeable`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -590,7 +590,7 @@ operation ::= `relalg.join` $left `,` $right custom<CustRegion>($predicate) attr
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
+Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `NullColumnTypeChangeable`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -622,7 +622,7 @@ operation ::= `relalg.limit` $max_rows $rel attr-dict
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `Operator`, `UnaryOperator`
+Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `NullColumnTypeChangeable`, `Operator`, `UnaryOperator`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -660,7 +660,7 @@ operation ::= `relalg.map` $rel `computes` `:` custom<CustDefArr>($computed_cols
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `Operator`, `TupleLamdaOperator`, `UnaryOperator`
+Interfaces: `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `NullColumnTypeChangeable`, `Operator`, `TupleLamdaOperator`, `UnaryOperator`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -698,7 +698,7 @@ operation ::= `relalg.markjoin` custom<CustDef>($markattr) $left `,` $right cust
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
+Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `NullColumnTypeChangeable`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -805,7 +805,7 @@ operation ::= `relalg.outerjoin` $left `,` $right custom<CustRegion>($predicate)
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
+Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `NullColumnTypeChangeable`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -844,7 +844,7 @@ operation ::= `relalg.projection` $set_semantic custom<CustRefArr>($cols) $rel a
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `Operator`, `UnaryOperator`
+Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `NullColumnTypeChangeable`, `Operator`, `UnaryOperator`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -960,7 +960,7 @@ operation ::= `relalg.renaming` $rel `renamed` `:` custom<CustDefArr>($columns) 
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `Operator`, `UnaryOperator`
+Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `NullColumnTypeChangeable`, `Operator`, `UnaryOperator`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -1000,7 +1000,7 @@ contained in the output stream.
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`, `UnaryOperator`
+Interfaces: `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `NullColumnTypeChangeable`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`, `UnaryOperator`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -1031,7 +1031,7 @@ operation ::= `relalg.semijoin` $left `,` $right custom<CustRegion>($predicate) 
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
+Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `NullColumnTypeChangeable`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -1063,7 +1063,7 @@ operation ::= `relalg.singlejoin` $left `,` $right custom<CustRegion>($predicate
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
+Interfaces: `BinaryOperator`, `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `NullColumnTypeChangeable`, `Operator`, `PredicateOperator`, `TupleLamdaOperator`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -1102,7 +1102,7 @@ operation ::= `relalg.sort` $rel custom<SortSpecs>($sortspecs) attr-dict
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `Operator`, `UnaryOperator`
+Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `NullColumnTypeChangeable`, `Operator`, `UnaryOperator`
 
 Effects: `MemoryEffects::Effect{}`
 

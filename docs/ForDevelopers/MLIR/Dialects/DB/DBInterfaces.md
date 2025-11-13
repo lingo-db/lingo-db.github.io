@@ -31,3 +31,16 @@ Returns true if the operator supports invalid values.
 
 NOTE: This method *must* be implemented by the user.
 
+## SupportsNullabilityChange (`DB_SupportsNullabilityChange`)
+
+
+### Methods:
+#### `getChangedResultType`
+
+```c++
+mlir::Type getChangedResultType();
+```
+Returns new result type .
+
+NOTE: This method *must* be implemented by the user.
+

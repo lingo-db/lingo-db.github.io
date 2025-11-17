@@ -657,7 +657,7 @@ Effects: `MemoryEffects::Effect{}`
 
 | Operand | Description |
 | :-----: | ----------- |
-| `val` | any type
+| `val` | variadic of any type
 
 #### Results:
 

@@ -892,6 +892,44 @@ operation ::= `util.varlen32_getlen` $varlen attr-dict
 | `len` | index
 
 
+### `util.varlen32_invalid` (::lingodb::compiler::dialect::util::VarLenInvalid)
+
+Syntax:
+
+```
+operation ::= `util.varlen32_invalid` attr-dict
+```
+
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `varlen` | type representing variable-length data up to 2^31 bytes
+
+
+### `util.varlen32_is_invalid` (::lingodb::compiler::dialect::util::VarLenIsInvalid)
+
+Syntax:
+
+```
+operation ::= `util.varlen32_is_invalid` $varlen attr-dict
+```
+
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `varlen` | type representing variable-length data up to 2^31 bytes
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `is_invalid` | 1-bit signless integer
+
+
 ### `util.varlen32_try_cheap_hash` (::lingodb::compiler::dialect::util::VarLenTryCheapHash)
 
 Syntax:

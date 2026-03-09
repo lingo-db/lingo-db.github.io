@@ -430,6 +430,41 @@ Effects: `MemoryEffects::Effect{}`
 | `ref` | ref type
 
 
+### `util.is_bit_set_const` (::lingodb::compiler::dialect::util::IsBitSetConstOp)
+
+Syntax:
+
+```
+operation ::= `util.is_bit_set_const` $bitset  `:` type($bitset)  `,` $bitpos attr-dict
+```
+
+
+Traits: `AlwaysSpeculatableImplTrait`
+
+Interfaces: `ConditionallySpeculatable`, `NoMemoryEffect (MemoryEffectOpInterface)`
+
+Effects: `MemoryEffects::Effect{}`
+
+#### Attributes:
+
+<table>
+<tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
+<tr><td><code>bitpos</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
+</table>
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `bitset` | integer
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `is_set` | 1-bit signless integer
+
+
 ### `util.is_ref_valid` (::lingodb::compiler::dialect::util::IsRefValidOp)
 
 Syntax:
@@ -475,6 +510,37 @@ Interfaces: `MemoryEffectOpInterface`
 | :-----: | ----------- |
 | `ref` | ref type
 | `idx` | index
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `val` | any type
+
+
+### `util.loadelement` (::lingodb::compiler::dialect::util::LoadElementOp)
+
+Syntax:
+
+```
+operation ::= `util.loadelement` $ref `[` $idx `]` `:`type($ref) `->` type($val) attr-dict
+```
+
+
+Interfaces: `MemoryEffectOpInterface`
+
+#### Attributes:
+
+<table>
+<tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
+<tr><td><code>idx</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
+</table>
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `ref` | ref type
 
 #### Results:
 
@@ -543,6 +609,42 @@ Effects: `MemoryEffects::Effect{}`
 | `matches` | 1-bit signless integer
 
 
+### `util.set_bit_const` (::lingodb::compiler::dialect::util::SetBitConstOp)
+
+Syntax:
+
+```
+operation ::= `util.set_bit_const` $bitset `:` type($bitset) `,` $val `,` $bitpos `->` type($res) attr-dict
+```
+
+
+Traits: `AlwaysSpeculatableImplTrait`
+
+Interfaces: `ConditionallySpeculatable`, `NoMemoryEffect (MemoryEffectOpInterface)`
+
+Effects: `MemoryEffects::Effect{}`
+
+#### Attributes:
+
+<table>
+<tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
+<tr><td><code>bitpos</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
+</table>
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `bitset` | integer
+| `val` | 1-bit signless integer
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `res` | integer
+
+
 ### `util.sizeof` (::lingodb::compiler::dialect::util::SizeOfOp)
 
 Syntax:
@@ -588,6 +690,30 @@ operation ::= `util.store` $val `:` type($val) `,` $ref `[` $idx `]` `:`type($re
 | `val` | any type
 | `ref` | ref type
 | `idx` | index
+
+
+### `util.storeelement` (::lingodb::compiler::dialect::util::StoreElementOp)
+
+Syntax:
+
+```
+operation ::= `util.storeelement` $val `:` type($val) `,` $ref `[` $idx `]` `:`type($ref) attr-dict
+```
+
+
+#### Attributes:
+
+<table>
+<tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
+<tr><td><code>idx</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
+</table>
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `val` | any type
+| `ref` | ref type
 
 
 ### `util.to_generic_memref` (::lingodb::compiler::dialect::util::ToGenericMemrefOp)

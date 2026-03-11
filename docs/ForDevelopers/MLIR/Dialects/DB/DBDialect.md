@@ -172,7 +172,7 @@ Determine whether a value is in a given range. This is preferred over (and also 
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `ConditionallySpeculatable`, `DB_NeedsNullWrap`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `SupportsNullabilityChange`
+Interfaces: `ConditionallySpeculatable`, `DB_MaySupportInvalidValues`, `DB_NeedsNullWrap`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `SupportsNullabilityChange`
 
 Effects: `MemoryEffects::Effect{}`
 

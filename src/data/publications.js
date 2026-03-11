@@ -38,3 +38,34 @@ export const primaryPublications = [
 With this demonstration, we want to show this for our own compiling query engine LingoDB. For this purpose, we built an instrumentation and visualization framework called LingoDB-CT, which aggregates data from multiple angles and visualizes it to reveal the bigger picture. Through two interactive demonstration scenarios, using publicly hosted web applications, we show that LingoDB is indeed easy to understand and profile.`
     }
 ]
+
+export const externalPublications = [
+    {
+        "ID": "chase",
+        "Title": "CHASE: A Native Relational Database for Hybrid Queries on Structured and Unstructured Data",
+        "Author": ["Rui Ma", "Kai Zhang", "Zhenying He", "Yinan Jing", "X. Sean Wang, Zhenqiang Chen"],
+        "Organization": "Fudan University, Transwarp",
+        "Date": "2025-01-08",
+        "ConferenceAbbrv": "arXiv",
+        "PDFLink": "https://arxiv.org/pdf/2501.05006",
+    },
+    {
+        "ID": "duolingo",
+        "Title": "DuoLingo-AutoDiff: In-Database Automatic Differentiation with MLIR",
+        "Author": ["Kevin Gutjahr", "Clemens Ruck", "Maximilian E. Schüle"],
+        "Organization": "University Bamberg",
+        "Date": "2025-06-22",
+        "ConferenceAbbrv": "DEEM@SIGMOD'25",
+        "PDFLink": "https://dl.acm.org/doi/10.1145/3735654.3735943",
+    },
+    {
+        "ID": "dhap",
+        "Title": "DHAP: Towards Efficient OLAP in a Disaggregated and Heterogeneous Environment",
+        "Author": ["Guangda Liu", "Chenqi Zhang", "Yizhou Shan","Hao Feng", "Zeke Wang", "Shixuan Sun", "Minyi Guo", "Jieru Zhao"],
+        "Organization": "Shanghai Jiao Tong University, Huawei, Zhejiang University",
+        "Date": "2025-06-22",
+        "ConferenceAbbrv": "SC 2025",
+        "PDFLink": "https://dl.acm.org/doi/10.1145/3712285.3759786",
+    },
+
+]

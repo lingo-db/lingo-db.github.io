@@ -557,7 +557,7 @@ _String constant_
 Syntax:
 
 ```
-operation ::= `util.pack` $vals `:` type($vals) attr-dict `->` type($tuple)
+operation ::= `util.pack` ($vals^ `:` type($vals))? attr-dict `->` type($tuple)
 ```
 
 

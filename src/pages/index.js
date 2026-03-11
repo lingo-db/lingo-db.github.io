@@ -200,8 +200,67 @@ export default function Home() {
                                 </a>
                             </div>
                         </div>
+                        <div className='row text--center'>
+                            <h2 style={{width: "100%"}}></h2>
+                            <div className="col col--2">
+                                <a href='https://github.com/moba15' target="_blank" id="tile">
+                                    <img style={{borderRadius: "75px"}}
+                                         src='/img/mykola.jpg' height="100px"/>
+                                    <h4 className="font-weight-bold">Mykola Morozov</h4>
+                                    <h5> PhD Student@TUM<br/>GPU</h5>
+                                </a>
+                            </div>
+                            <div className="col col--2">
+                                <a href='https://github.com/moba15' target="_blank" id="tile">
+                                    <img style={{borderRadius: "75px"}}
+                                         src='https://avatars.githubusercontent.com/u/56317626' height="100px"/>
+                                    <h4 className="font-weight-bold">Moritz Bachmaier</h4>
+                                    <h5> Student Research Assistant<br/> Software Campus<br/> 04/2025 - today</h5>
+                                </a>
+                            </div>
+                            <div className="col col--2">
+                                <a href='https://github.com/LukasHaussmann' target="_blank" id="tile">
+                                    <img style={{borderRadius: "75px"}}
+                                         src='/img/haussmann.jpeg' height="100px"/>
+                                    <h4 className="font-weight-bold">Lukas Haußmann</h4>
+                                    <h5>Student Research Assistant<br/> Software Campus<br/> 09/2025 - today</h5>
+                                </a>
+                            </div>
+                            <div className="col col--2">
+                                <a href='https://github.com/LadnerJonas' target="_blank" id="tile">
+                                    <img style={{borderRadius: "75px"}}
+                                         src='https://avatars.githubusercontent.com/u/92096842' height="100px"/>
+                                    <h4 className="font-weight-bold">Jonas Ladner</h4>
+                                    <h5>Student Research Assistant<br/> Software Campus<br/> 11/2025 - today</h5>
+                                </a>
+                            </div>
+                            <div className="col col--2">
+                                <a href='https://github.com/aorief' target="_blank" id="tile">
+                                    <img style={{borderRadius: "75px"}}
+                                         src='/img/abdel.png' height="100px"/>
+                                    <h4 className="font-weight-bold">Abdelrahman Orief</h4>
+                                    <h5>Student Research Assistant<br/> Software Campus<br/> 04/2025 - 07/2025</h5>
+                                </a>
+                            </div>
+                            <div className="col col--2">
+                                <a href='https://lukas-doellerer.de' target="_blank" id="tile">
+                                    <img style={{borderRadius: "75px"}}
+                                         src='https://lukas-doellerer.de/profile-pic.jpg' height="100px"/>
+                                    <h4 className="font-weight-bold">Lukas Döllerer</h4>
+                                    <h5>Student Research Assistant<br/> Software Campus<br/> 04/2025 - 12/2025</h5>
+                                </a>
+                            </div>
+                            <div className="col col--2">
+                                <a href='https://www.cs.cit.tum.de/dis/team/pascal-ginter/' target="_blank" id="tile">
+                                    <img style={{borderRadius: "75px"}}
+                                         src='/img/pascal.jpeg' height="100px"/>
+                                    <h4 className="font-weight-bold">Pascal Ginter</h4>
+                                    <h5>Student Research Assistant<br/> Software Campus<br/> 09/2022 - 03/2023</h5>
+                                </a>
+                            </div>
+                        </div>
                         <div className='row'>
-                            <h2 style={{width: "100%"}}>Students</h2>
+                            <h2 style={{width: "100%"}}>Thesis Projects</h2>
                             <div style={{marginLeft: "auto", marginRight: "auto"}}>
                                 <table className="table">
                                     <thead>
@@ -232,10 +291,16 @@ export default function Home() {
                                         <td>M.Sc. Thesis</td>
                                     </tr>
                                     <tr>
-                                        <td>Pascal Ginter</td>
-                                        <td>C-Backend, Index-Nested Loop Joins, Query Plan Visualization</td>
+                                        <td>Artem Kroviakov</td>
+                                        <td>Parallel Query Processing on GPUs using Sub-operators</td>
                                         <td>Jungmair</td>
-                                        <td>Research Assistant</td>
+                                        <td>M.Sc. Thesis</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Moritz Bachmaier</td>
+                                        <td>Arrow Flight SQL in Practice: A Case Study with LingoDB</td>
+                                        <td>Jungmair</td>
+                                        <td>B.Sc. Thesis</td>
                                     </tr>
                                     </tbody>
                                 </table>

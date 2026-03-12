@@ -255,7 +255,7 @@ export default function Home() {
                                     <img style={{borderRadius: "75px"}}
                                          src='/img/pascal.jpeg' height="100px"/>
                                     <h4 className="font-weight-bold">Pascal Ginter</h4>
-                                    <h5>Student Research Assistant<br/> Software Campus<br/> 09/2022 - 03/2023</h5>
+                                    <h5>Student Research Assistant<br/> 09/2022 - 03/2023</h5>
                                 </a>
                             </div>
                         </div>

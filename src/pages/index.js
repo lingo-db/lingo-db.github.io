@@ -235,6 +235,14 @@ export default function Home() {
                                 </a>
                             </div>
                             <div className="col col--2">
+                                <a href='https://hehezhou.github.io/' target="_blank" id="tile">
+                                    <img style={{borderRadius: "75px"}}
+                                         src='https://hehezhou.github.io//images/profile.png' height="100px"/>
+                                    <h4 className="font-weight-bold">Hangrui Zhou</h4>
+                                    <h5>Intern<br/>Tsinghua University. <br/> 03/2025 - </h5>
+                                </a>
+                            </div>
+                            <div className="col col--2">
                                 <a href='https://github.com/aorief' target="_blank" id="tile">
                                     <img style={{borderRadius: "75px"}}
                                          src='/img/abdel.png' height="100px"/>

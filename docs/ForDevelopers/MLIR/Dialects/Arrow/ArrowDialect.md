@@ -4,9 +4,13 @@
 The Arrow dialect provides types and operations for working with Apache Arrow data structures.
 It includes types for arrays and builders (for chunked arrays), and the necessary operations to load values from arrays, and append values to builders.
 
-The operation implemented by this dialect work directly on the physical memory layout, and do not have any knowledge about Apache Arrow's logical types.
+The operations implemented by this dialect work directly on the *physical* memory layout, and do not have any knowledge about Apache Arrow's logical types.
 For example, dates are loaded as integers, strings are loaded as ptr + len, and so on.
-Dealing with logical types is the responsibility of higher-level dialects.
+Do **not** add operations or lowerings here that encode logical-type semantics
+(e.g. interval_day_time -> nanoseconds, decimal scaling, timestamp unit conversion).
+Such logical-to-physical translation is the responsibility of higher-level dialects
+(in particular the DB dialect, see `Conversion/DBToStd/LowerToStd.cpp`), which
+emit the appropriate sequence of physical loads/appends defined here.
 
 
 ## Operations
@@ -110,38 +114,6 @@ Effects: `MemoryEffects::Effect{}`
 | `value` | any type
 
 
-### `arrow.array.load_interval_daytime` (::lingodb::compiler::dialect::arrow::LoadIntervalDaytimeOp)
-
-_Loads an interval_day_time value from an array and returns nanoseconds._
-
-
-Syntax:
-
-```
-operation ::= `arrow.array.load_interval_daytime` $array `,` $offset attr-dict
-```
-
-
-Traits: `AlwaysSpeculatableImplTrait`
-
-Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`
-
-Effects: `MemoryEffects::Effect{}`
-
-#### Operands:
-
-| Operand | Description |
-| :-----: | ----------- |
-| `array` | represents an anonymous Apache Arrow array, without knowledge of the type stored by it
-| `offset` | index
-
-#### Results:
-
-| Result | Description |
-| :----: | ----------- |
-| `value` | 64-bit signless integer
-
-
 ### `arrow.array.load_variable_size_binary` (::lingodb::compiler::dialect::arrow::LoadVariableSizeBinaryOp)
 
 _Loads a variable sized binary value from an array at a given offset_
@@ -220,27 +192,6 @@ It can be used for any fixed sized type, such as integers, floats, decimals, dat
 | :-----: | ----------- |
 | `builder` | represents an anonymous Apache Arrow builder (building a chunked array), without knowledge of the type stored by it
 | `value` | any type
-| `valid` | 1-bit signless integer
-
-
-### `arrow.array_builder.append_interval_daytime` (::lingodb::compiler::dialect::arrow::AppendIntervalDaytimeOp)
-
-_Appends an interval<daytime> value (nanoseconds) to an Arrow array builder (endianness-stable)._
-
-
-Syntax:
-
-```
-operation ::= `arrow.array_builder.append_interval_daytime` $builder `,` $nanos ( `,` $valid^ )? attr-dict
-```
-
-
-#### Operands:
-
-| Operand | Description |
-| :-----: | ----------- |
-| `builder` | represents an anonymous Apache Arrow builder (building a chunked array), without knowledge of the type stored by it
-| `nanos` | 64-bit signless integer
 | `valid` | 1-bit signless integer
 
 

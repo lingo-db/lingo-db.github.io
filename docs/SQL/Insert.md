@@ -38,3 +38,15 @@ LingoDB also supports inserting data from the result of a `SELECT` query.
 INSERT INTO my_table (column1, column2)
 SELECT col_a, col_b FROM another_table WHERE col_c = 'some_condition';
 ```
+
+## Copying data from a file
+LingoDB supports copying data from a file using the `COPY` command. 
+
+Supported options: `DELIMITER '<c>'`, `ESCAPE '<c>'`, `csv`, `HEADER`
+- Decide: add a new "COPY" section here, or split into SQL/Copy.md
+
+Example:
+```sql
+COPY t FROM 't.csv'  delimiter ',' csv header;
+```
+

@@ -4,7 +4,7 @@ type: docs
 weight: 1
 ---
 ## Binaries
-On the [Release Page](https://github.com/lingo-db/lingo-db/releases/tag/v0.0.3), you can find pre-built binaries for Linux/AMD64.
+On the [Release Page](https://github.com/lingo-db/lingo-db/releases/tag/v0.0.5), you can find pre-built binaries for Linux/AMD64.
 These binaries only depend on standard libraries (`libpthread`,`librt`,`libstdc++`,`libm`,`libgcc`,`libc`) and can be run on most Linux systems.
 
 
@@ -22,8 +22,14 @@ pip install lingodb
 ## Building from source
 1. Ensure you have a machine with sufficient compute power and space
 1. Make sure that you have the all [dependencies](../ForDevelopers/Dependencies.md) installed
+1. Initialize the git submodules (`git submodule update --init --recursive`)
 1. Build LingoDB
     * Debug Version : `make build-debug` (will create binaries under `build/lingodb-debug`)
     * Release Version : `make build-release` (will create binaries under `build/lingodb-release`)
+
+Build variants:
+* TPDE Baseline Backend: `make build-release ENABLE_BASELINE_BACKEND=ON` enables a much faster compilation backend based on TPDE
+* Use default system allocator instead of mimalloc: `make build-release ENABLE_MIMALLOC=OFF` (default is ON, which uses mimalloc as the allocator)
+
 
 

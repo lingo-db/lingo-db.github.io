@@ -18,6 +18,7 @@ create table t(
 ```
 [Supported Types](./Types.md)
 
+
 :::info[Unsupported Features (incomplete list)]
 Statements like `create table as` are not supported
 ```sql

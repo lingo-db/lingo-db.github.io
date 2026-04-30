@@ -25,6 +25,8 @@ bash tools/generate/tpcds.sh DATA_DIR SF
 bash tools/generate/job.sh DATA_DIR
 # Generate SSB database
 bash tools/generate/ssb.sh DATA_DIR SF
+# Generate TPCx-BB database
+bash tools/generate/tpcxbb.sh DATA_DIR SF
 ```
 
 ### Data Loading 

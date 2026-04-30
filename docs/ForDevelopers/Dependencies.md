@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 
 LingoDB relies on three main external dependencies:
 * [LLVM/MLIR 20](https://github.com/llvm/llvm-project)
-* [Apache Arrow 20](https://arrow.apache.org/release/20.0.0.html)
+* [Apache Arrow 24](https://arrow.apache.org/release/24.0.0.html)
 * [Boost Context 1.83](https://www.boost.org/doc/libs/1_83_0/libs/context/doc/html/index.html)
 
 **Additional tools and libraries required:**
@@ -78,7 +78,7 @@ cmake --build build --target install -j$(sysctl -n hw.logicalcpu)
 wget https://apache.jfrog.io/artifactory/arrow/$(lsb_release --id --short | tr 'A-Z' 'a-z')/apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb
 apt install -y -V ./apache-arrow-apt-source-latest-$(lsb_release --codename  --short).deb
 apt-get update
-apt-get install libarrow-dev=20.*
+apt-get install libarrow-dev=24.* libarrow-compute-dev=24.* libparquet-dev=24.*
 ```
 
 ### Binaries
@@ -87,10 +87,10 @@ For other recent Linux distributions, you can also rely on the pre-built binarie
 ### Building from Source
 
 ```shell
-wget https://github.com/apache/arrow/releases/download/apache-arrow-20.0.0/apache-arrow-20.0.0.tar.gz
-tar -xf apache-arrow-20.0.0.tar.gz
-cd apache-arrow-20.0.0/cpp
-cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=[output-dir] -DARROW_DEPENDENCY_SOURCE=BUNDLED -DARROW_BUILD_STATIC=ON -DARROW_CSV=ON -DARROW_JSON=ON -DARROW_COMPUTE=ON apache-arrow-20.0.0/cpp
+wget https://github.com/apache/arrow/releases/download/apache-arrow-24.0.0/apache-arrow-24.0.0.tar.gz
+tar -xf apache-arrow-24.0.0.tar.gz
+cd apache-arrow-24.0.0/cpp
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=[output-dir] -DARROW_DEPENDENCY_SOURCE=BUNDLED -DARROW_BUILD_STATIC=ON -DARROW_CSV=ON -DARROW_JSON=ON -DARROW_COMPUTE=ON apache-arrow-24.0.0/cpp
 cmake --build build --target install -j$(nproc)
 ```
 
@@ -101,15 +101,15 @@ Install Apache Arrow using Homebrew:
 
 ```shell
 brew tap lingo-db/homebrew https://github.com/lingo-db/homebrew.git
-brew install lingo-db/homebrew/apache-arrow@20
+brew install lingo-db/homebrew/apache-arrow@24
 ```
 
 ### Building from Source
 
 ```shell
-wget https://github.com/apache/arrow/releases/download/apache-arrow-20.0.0/apache-arrow-20.0.0.tar.gz
-tar -xf apache-arrow-20.0.0.tar.gz
-cd apache-arrow-20.0.0/cpp
+wget https://github.com/apache/arrow/releases/download/apache-arrow-24.0.0/apache-arrow-24.0.0.tar.gz
+tar -xf apache-arrow-24.0.0.tar.gz
+cd apache-arrow-24.0.0/cpp
 cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=[output-dir] -DARROW_DEPENDENCY_SOURCE=BUNDLED -DARROW_BUILD_STATIC=ON -DARROW_CSV=ON -DARROW_JSON=ON -DARROW_COMPUTE=ON -DCMAKE_PREFIX_PATH=/opt/homebrew/ -DCMAKE_CXX_COMPILER=/opt/homebrew/bin/clang++ -DCMAKE_C_COMPILER=/opt/homebrew/bin/clang
 cmake --build build --target install -j$(sysctl -n hw.logicalcpu)
 ```

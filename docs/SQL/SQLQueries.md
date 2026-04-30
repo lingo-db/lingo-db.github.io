@@ -125,7 +125,7 @@ SELECT sum(x) OVER (PARTITION BY y ORDER BY z ROWS BETWEEN x PRECEDING AND x FOL
 
 ## Set Operations
 
-LingoDB supports `UNION`, `UNION ALL`, `EXCPET` and `EXCPET ALL` to combine the result sets of two or more `SELECT` statements.
+LingoDB supports `UNION`, `UNION ALL`, `INTERSECT`, `INTERSECT ALL`, `EXCEPT` and `EXCEPT ALL` to combine the result sets of two or more `SELECT` statements.
 
 ```sql
 SELECT studnr FROM students

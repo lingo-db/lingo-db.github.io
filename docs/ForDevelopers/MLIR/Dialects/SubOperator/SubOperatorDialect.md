@@ -251,7 +251,7 @@ operation ::= `subop.create_simple_state` type($res) (`initial` `:` $initFn^)? a
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `ConditionallySpeculatable`, `NoMemoryEffect (MemoryEffectOpInterface)`
+Interfaces: `ConditionallySpeculatable`, `NoMemoryEffect (MemoryEffectOpInterface)`, `SubOperator`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -1351,32 +1351,68 @@ Interfaces: `StateUsingSubOperator`, `SubOperator`
 | `tupleCount` | simple state with multiple members
 
 
-### `subop.simple_state_get_scalar` (::lingodb::compiler::dialect::subop::SimpleStateGetScalar)
+### `subop.state_from_native` (::lingodb::compiler::dialect::subop::StateFromNativeOp)
 
-_Get scalar value of simple state_
+_Build a subop state from a native SSA value_
 
 
 Syntax:
 
 ```
-operation ::= `subop.simple_state_get_scalar` $member $state `:` type($state) `->` type($res) attr-dict
+operation ::= `subop.state_from_native` $values `:` type($values) `->` type($res) attr-dict
 ```
 
+Crosses the boundary from plain SSA / imperative code back into
+`subop` data flow. For now only `SimpleState` is supported; the
+native representation is a tuple whose element types match the
+state's members in declaration order.
 
-Interfaces: `SubOperator`
+Traits: `AlwaysSpeculatableImplTrait`
 
-#### Attributes:
+Interfaces: `ConditionallySpeculatable`, `NoMemoryEffect (MemoryEffectOpInterface)`
 
-<table>
-<tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
-<tr><td><code>member</code></td><td>::lingodb::compiler::dialect::subop::MemberAttr</td><td><details><summary></summary><ul><li>References a member in a state, e.g., for specifying the members to sort for etc</li></ul></details></td></tr>
-</table>
+Effects: `MemoryEffects::Effect{}`
 
 #### Operands:
 
 | Operand | Description |
 | :-----: | ----------- |
-| `state` | simple state with multiple members
+| `values` | any type
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `res` | any type
+
+
+### `subop.state_to_native` (::lingodb::compiler::dialect::subop::StateToNativeOp)
+
+_Convert a subop state into a native SSA value_
+
+
+Syntax:
+
+```
+operation ::= `subop.state_to_native` $state `:` type($state) `->` type($res) attr-dict
+```
+
+Crosses the boundary from `subop` data flow into plain SSA /
+imperative code. For now only `SimpleState` is supported; the native
+representation is a tuple whose element types match the state's
+members in declaration order.
+
+Traits: `AlwaysSpeculatableImplTrait`
+
+Interfaces: `ConditionallySpeculatable`, `NoMemoryEffect (MemoryEffectOpInterface)`
+
+Effects: `MemoryEffects::Effect{}`
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `state` | any type
 
 #### Results:
 

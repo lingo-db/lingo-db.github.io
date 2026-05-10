@@ -869,52 +869,6 @@ Effects: `MemoryEffects::Effect{}`
 | `result` | tuple stream type
 
 
-### `relalg.query` (::lingodb::compiler::dialect::relalg::QueryOp)
-
-_Query_
-
-
-Syntax:
-
-```
-operation ::= `relalg.query` ($inputs^ `:` type($inputs))? custom<CustRegion>($query_ops)  `->` type($results) attr-dict-with-keyword
-```
-
-
-#### Operands:
-
-| Operand | Description |
-| :-----: | ----------- |
-| `inputs` | variadic of any type
-
-#### Results:
-
-| Result | Description |
-| :----: | ----------- |
-| `results` | variadic of any type
-
-
-### `relalg.query_return` (::lingodb::compiler::dialect::relalg::QueryReturnOp)
-
-_Query return_
-
-
-Syntax:
-
-```
-operation ::= `relalg.query_return` ($inputs^ `:` type($inputs))? attr-dict-with-keyword
-```
-
-
-Traits: `Terminator`
-
-#### Operands:
-
-| Operand | Description |
-| :-----: | ----------- |
-| `inputs` | variadic of any type
-
-
 ### `relalg.rank` (::lingodb::compiler::dialect::relalg::RankOp)
 
 _Rank inside window_

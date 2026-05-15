@@ -15,6 +15,51 @@ Returns true if the operator cannot `NULL` itself.
 
 NOTE: This method *must* be implemented by the user.
 
+## RefCountedOp (`DB_RefCountedOp`)
+
+Operations that need explicit ref-count adjustments during the memory
+management pass. The pass calls these methods to discover operands and
+results that require `add_use` insertion, or replaces the op entirely
+via `rewriteForRefCount`.
+
+- `getOwnedOperands` returns operands of which this op consumes /
+  captures a reference. The pass emits a matching `add_use` for each,
+  *before* the op.
+- `getBorrowedResults` returns results that "borrow" an existing
+  reference from somewhere else (e.g. loading from a container). The
+  pass emits a matching `add_use` for each, *after* the op.
+- `rewriteForRefCount` is an escape hatch for ops that cannot grow
+  ref counts in-place (e.g. `arith.select` -> `scf.if`). It returns
+  the replacement op, or `nullptr` if no rewrite is needed.
+
+### Methods:
+#### `getOwnedOperands`
+
+```c++
+void getOwnedOperands(llvm::SmallVectorImpl<mlir::Value>&result);
+```
+Operands of which this op consumes / captures a reference (need add_use before).
+
+NOTE: This method *must* be implemented by the user.
+
+#### `getBorrowedResults`
+
+```c++
+void getBorrowedResults(llvm::SmallVectorImpl<mlir::Value>&result);
+```
+Results that borrow an existing reference (need add_use after).
+
+NOTE: This method *must* be implemented by the user.
+
+#### `rewriteForRefCount`
+
+```c++
+mlir::Operation*rewriteForRefCount(mlir::OpBuilder&builder, llvm::DenseSet<mlir::Value>&returnedValues);
+```
+Optional in-place rewrite. Returns the replacement op or nullptr.
+
+NOTE: This method *must* be implemented by the user.
+
 ## SupportsInvalidValues (`DB_SupportsInvalidValues`)
 
 This interface allows operations to indicate that they can safely handle

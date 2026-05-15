@@ -38,6 +38,42 @@ Effects: `MemoryEffects::Effect{}`
 | `res` | tuple stream type
 
 
+### `subop.combine_tuple_with_values` (::lingodb::compiler::dialect::subop::CombineTupleWithValues)
+
+Syntax:
+
+```
+operation ::= `subop.combine_tuple_with_values` $stream `,` ($values^ `:` type($values))? `=` `>` custom<CustDefArr>($columns) attr-dict
+```
+
+
+Traits: `AlwaysSpeculatableImplTrait`
+
+Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `SubOperator`
+
+Effects: `MemoryEffects::Effect{}`
+
+#### Attributes:
+
+<table>
+<tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
+<tr><td><code>columns</code></td><td>::mlir::ArrayAttr</td><td>array attribute</td></tr>
+</table>
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `stream` | tuple stream type
+| `values` | variadic of any type
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `res` | tuple stream type
+
+
 ### `subop.create` (::lingodb::compiler::dialect::subop::GenericCreateOp)
 
 _Create new state_
@@ -882,7 +918,7 @@ operation ::= `subop.map` $stream `computes` `:` custom<CustDefArr>($computed_co
 ```
 
 
-Traits: `AlwaysSpeculatableImplTrait`
+Traits: `AlwaysSpeculatableImplTrait`, `IsolatedFromAbove`
 
 Interfaces: `ColumnFoldable`, `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `SubOperator`
 

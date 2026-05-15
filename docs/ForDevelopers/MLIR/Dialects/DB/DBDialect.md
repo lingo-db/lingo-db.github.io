@@ -139,7 +139,7 @@ operation ::= `db.as_nullable` $val `:` type($val) ( `,` $null^ )?  `->` type($r
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `ConditionallySpeculatable`, `NoMemoryEffect (MemoryEffectOpInterface)`
+Interfaces: `ConditionallySpeculatable`, `NoMemoryEffect (MemoryEffectOpInterface)`, `RefCountedOp`
 
 Effects: `MemoryEffects::Effect{}`
 
@@ -709,6 +709,8 @@ operation ::= `db.list_append` $list `:` type($list)  `,` $element `:` type($ele
 ```
 
 
+Interfaces: `RefCountedOp`
+
 #### Operands:
 
 | Operand | Description |
@@ -728,6 +730,8 @@ Syntax:
 operation ::= `db.list_get` $list `:` type($list) `[` $index `]` `:` type($element) attr-dict
 ```
 
+
+Interfaces: `RefCountedOp`
 
 #### Operands:
 
@@ -782,6 +786,8 @@ operation ::= `db.list_set` $list `:` type($list) `[` $index `]` `=` $element `:
 ```
 
 
+Interfaces: `RefCountedOp`
+
 #### Operands:
 
 | Operand | Description |
@@ -789,6 +795,82 @@ operation ::= `db.list_set` $list `:` type($list) `[` $index `]` `=` $element `:
 | `list` | 
 | `index` | index
 | `element` | any type
+
+
+### `db.memory.add_use` (::lingodb::compiler::dialect::db::MemoryAddUse)
+
+_Acquire a use of a managed value (e.g. increment refcount)_
+
+
+Syntax:
+
+```
+operation ::= `db.memory.add_use` $value `:` type($value) attr-dict
+```
+
+
+Interfaces: `DB_NeedsNullWrap`
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `value` | any type
+
+
+### `db.memory.cleanup_use` (::lingodb::compiler::dialect::db::MemoryCleanupUse)
+
+_Release a use of a managed value (e.g. decrement refcount, free at 0)_
+
+
+Syntax:
+
+```
+operation ::= `db.memory.cleanup_use` $value `:` type($value) ($cleanupFn^)? attr-dict
+```
+
+
+Interfaces: `DB_NeedsNullWrap`
+
+#### Attributes:
+
+<table>
+<tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
+<tr><td><code>cleanupFn</code></td><td>::mlir::SymbolRefAttr</td><td>symbol reference attribute</td></tr>
+</table>
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `value` | any type
+
+
+### `db.memory.promote_to_global` (::lingodb::compiler::dialect::db::MemoryPromoteToGlobal)
+
+_Promote a refcounted value to global lifetime (register with the execution context)_
+
+
+Syntax:
+
+```
+operation ::= `db.memory.promote_to_global` $value `:` type($value) `->` type($res) attr-dict
+```
+
+
+Interfaces: `DB_NeedsNullWrap`
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `value` | any type
+
+#### Results:
+
+| Result | Description |
+| :----: | ----------- |
+| `res` | any type
 
 
 ### `db.mod` (::lingodb::compiler::dialect::db::ModOp)
@@ -925,7 +1007,7 @@ operation ::= `db.nullable_get_val` $val `:` type($val)  attr-dict
 
 Traits: `AlwaysSpeculatableImplTrait`
 
-Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`
+Interfaces: `ConditionallySpeculatable`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `RefCountedOp`
 
 Effects: `MemoryEffects::Effect{}`
 

@@ -1,0 +1,236 @@
+---
+title: "Maintainable, Low-Latency and High-Quality Query Compilation with MLIR and TPDE"
+description: This post explains how to fine-tune MLIR towards low-latency and how to combine it with TPDE for maintainable, low-latency and high-quality query compilation
+slug: mlir-tpde
+authors: ladnerjonas
+tags: [query compilation, TPDE, MLIR, maintainable, open source, low-latency]
+image: /img/favicon.ico
+hide_table_of_contents: false
+---
+<!-- wraping blog content in NumberingProvider allows for auto-numbered Table/Figure captions and <Ref> cross-links -->
+import {NumberingProvider, Table, Figure, Ref} from '@site/src/components/numbering';
+
+
+Compiling a TPC-H query in LingoDB used to take around 35ms. It now takes around 5ms, and the generated code is just as fast as before on small datasets. The largest part of that came from machine code generation, which dropped from 26ms to 0.57ms, and the rest from tuning MLIR itself. MLIR-based query engines usually pay 50 to 150ms of compilation latency for a typical analytical SQL query. That overhead dominates the total latency on small datasets, and it is what kept LingoDB behind Hyper, Umbra and DuckDB. In this blog post we explain how to tune MLIR for low-latency and how to combine it with TPDE to allow for near instant query compilation. This blog post builds on our ADMS'26 workshop [paper](https://db.in.tum.de/~jungmair/papers/adms-2026-fast-compilation.pdf): Maintainable, Low-Latency and High-Quality Query Compilation with MLIR and TPDE.
+
+<!-- truncate -->
+
+<NumberingProvider
+  figures={['pipeline-architecture', 'benchmark']}
+  tables={['mlir-speedup', 'backend-latency', 'impl-effort']}
+>
+
+The compilation latency has two sources: MLIR itself is built for flexibility rather than for low latency, and the standard path to machine code runs through LLVM-IR, where a general-purpose compiler does work that a query engine does not need. We attacked both, and the two halves are independent of each other. The MLIR tuning works in any MLIR-based system, even one that keeps LLVM.
+
+## LingoDB's Compiler Pipeline: A Brief Overview
+Before we dive into the technical details, we first want to provide a quick overview of our query compilation pipeline.
+<Figure id="pipeline-architecture" caption="The MLIR-TPDE Compiler Frontend and Backend Pipeline architecture.">
+  <img
+    src="/img/blog/mlir-tpde/overview-figure.svg"
+    alt="Compiler Frontend and Backend Pipeline"
+    className="tikz-canvas"
+  />
+</Figure>
+
+As shown in <Ref id="pipeline-architecture"/>, the query parsing stage converts the given SQL statement directly into a high level MLIR module, containing well-known relational operations like joins and tablescans. This MLIR module is then optimized and lowered in layers ([RelAlg](/docs/ForDevelopers/MLIR/Dialects/RelAlg/RelAlgDialect) -> [SubOp](/docs/ForDevelopers/MLIR/Dialects/SubOperator/SubOperatorDialect) -> Basic Ops) until it eventually only consists of operators from low-level MLIR dialects like `arith`, `scf` and `func`.
+
+After passing through the compiler frontend, the module has to be lowered to machine code. Previously, we used the common approach to first transform the code into LLVM-IR to then use the existing LLVM infrastructure. However, this approach suffered from long compilation latencies. To avoid this compilation latency hurdle, we want to present our novel MLIR-TPDE backend, which finally brings low-latency compilation to MLIR.
+
+
+## Speeding up MLIR itself
+
+Before we dive into TPDE, we first want to give a brief overview of the techniques used to speed up MLIR. The following five techniques are independent of the backend and thus work in any MLIR-based system. Start here even if you keep LLVM.
+
+**Pre-initialize contexts:** Registering all dialects, ops, types, and attributes on a fresh `MLIRContext` costs roughly 0.5ms per query. We keep a pool of pre-built contexts and refill it asynchronously. The init cost leaves the critical path. This one looks better than it is: it cuts the SQL phase by 28% to 45%, but only around 3% of the total, because the lowering phase dominates everything else.
+
+**Disable verification in production:** MLIR verifies the Intermediate Representation (IR) after every transformation. That is great during development and acts like asserts. In production it is pure overhead. Turning it off cut the optimization and lowering phases by about 24%.
+
+**Tune pattern application and canonicalization:** MLIR's rewrite driver runs several expensive simplification steps by default that changed almost nothing in our pipeline. The canonicalization pass also does region simplification you can switch off via config. Tuning the pattern driver cut those phases by about 21%.
+
+**Fold proactively:** Instead of cleaning up with a full canonicalization pass, use `createOrFold` when you build operations. For example, a box operation immediately followed by an unbox operation cancels at construction time. You keep the benefit and skip a pass over the whole module. When you still need cleanup, run a small targeted pattern set rather than general canonicalization.
+
+**Generate less IR in the first place:** Every operation created early is an operation that every later pass has to walk. Instead of generating code for filters, we run vectorized filters over data chunks. We also removed unnecessary null checks and unboxing operations, and introduced fused low-level operations for common cases: checking a tagged pointer against a hash value, setting and testing specific bits in integers, and loading and storing struct members without explicitly calculating the address.
+
+## Integrating TPDE
+
+[TPDE](https://github.com/tpde2/tpde) is a novel framework for compiler backends that directly works on the IR at hand. Its aim is low-latency code generation, while preserving reasonable (`-O0`) code quality.
+After creating a custom adapter to your IR, TPDE is able to directly iterate over it. As TPDE provides cheap liveness analysis, register allocation and instruction selection, developers can focus on the high-level IR and let TPDE handle the low-level details.
+
+MLIR-TPDE supports `func`, `cf` and `arith`, and we deliberately stopped there. Supporting structured control flow like `scf.for` would force the backend to create virtual basic blocks for loops, which increases complexity significantly. Since our frontend lowers to basic dialects anyway, a built-in MLIR pass converts `scf` to `cf` for us, and TPDE can then read our IR directly using a much simpler adapter.
+
+Three components form this new compiler backend:
+
+**The IR Adapter** bridges MLIR to TPDE. The hard part is reconciling two SSA models. TPDE expects φ-nodes. MLIR uses block arguments. A φ-node selects a value depending on which predecessor edge control flow arrived from, which is what a loop variable needs: the entry edge carries the initial value, the back edge carries the updated one. MLIR encodes the same information from the other side, as an argument on the jump operation in each predecessor. Our adapter therefore emulates φ-nodes by looking up every predecessor block and reading the jump operations that feed the current block's arguments.
+
+**Snippets** allow specifying the semantics of an operation by writing tiny C(++) functions. TPDE's EncodeGen tool compiles them to LLVM-IR at build time, then turns that into encoder functions that emit ISA instructions. The snippets are platform-agnostic. Write the semantics once, get x86-64 and aarch64 for free.
+
+Here is a simple example for a snippet that adds two unsigned integers:
+```cpp
+unsigned addU32(unsigned a, unsigned b) { return a + b; }
+unsigned long addU64(unsigned long a, unsigned long b) { return a + b; }
+```
+
+In the backend you grab value references and call the generated encoder by bit width. A real implementation folds whole operation categories into a lookup table of encoder pointers instead of a switch.
+
+```cpp
+bool compile_arith_addi(IRInstRef inst) {
+  // prepare value references from op arguments
+  auto lhs_ref = this->val_ref(inst->getOperand(0));
+  auto rhs_ref = this->val_ref(inst->getOperand(1));
+  
+  // prepare result reference
+  auto res_ref = this->result_ref(inst);
+  auto bitwidth = inst->getResult(0).getType().getBitWidth();
+  
+  // call encoder generated from the snippets depending on bitwidth
+  switch(bitwidth){
+    case 32:
+      return derived()->encode_addU32(lhs_ref.part(0), rhs_ref.part(0), res_ref.part(0));
+    case 64:
+      return derived()->encode_addU64(lhs_ref.part(0), rhs_ref.part(0), res_ref.part(0));
+    ...
+  }
+}
+```
+
+**Target-specific backends:** This layer is small. It covers platform-specifics like calling conventions, jumps and conditional branches, and resolving global symbols through the GOT. It also drives instruction fusion, for example merging a comparison into the following branch. TPDE's builder helpers do most of the work.
+
+
+## Custom operations are cheap
+
+Snippets pay off most for domain-specific operations. A database engine needs primitives that no general-purpose compiler ships with, and in a hand-written backend each of them requires one implementation per target architecture. With TPDE's snippets, the semantics are written once in C++ and TPDE's EncodeGen tool derives the x86-64 and aarch64 encoders from them. A tagged-pointer probe against a 16-bit filter (as described [in Altan Birler's hash table paper](https://db.in.tum.de/~birler/papers/hashtable.pdf)) is a good example:
+
+```cpp
+bool ptr_tag_matches(void* ptr, uint64_t hash, void* bloomMaskPtr) {
+  uint64_t slot = hash >> 53;
+  uint16_t tag = ((uint16_t*) bloomMaskPtr)[slot];
+  uint16_t entry = (uint16_t) (uintptr_t) ptr;
+  return (tag & (entry ^ 0xFFFF)) == 0;
+}
+```
+
+Like in our previous snippet example, we only have to call the derived method from this snippet in the backend to provide our engine with custom operations.
+
+## Results
+
+To quantify the impact of our solution, we provide in this section some numbers from our workshop paper. The x86-64 experiments ran on an `m7a.4xlarge` instance, the aarch64 experiments on a Graviton 4 `m8g.4xlarge`. We compared against Umbra 26.02, Tableau Hyper 0.0.22106 and DuckDB 1.4.3, using 5 warmup runs and the median over 20 measured runs.
+
+
+### MLIR speedup
+
+In this ablation study, we want to isolate the impact of each individual MLIR tuning step. Every row adds one technique on top of the row above it, and the percentages are relative to that previous row.
+
+<div className="blog-table">
+<Table id="mlir-speedup" caption="Average compilation latency across high-level compilation phases [ms]. Each row adds one optimization on top of the previous one.">
+
+| Benchmark | Optimization | SQL | Opt. | Lowerings | ∑ |
+|---|---|---|---|---|---|
+| **TPC-H** | - | 1.0 | 1.4 | 7.0 | 9.4 |
+| | NoVerification | 1.0 *+2%* | 1.1 *-20%* | 5.2 *-26%* | 7.3 *-22%* |
+| | AsyncContext | 0.6 *-45%* | 1.2 *+5%* | 5.2 *+2%* | 7.0 *-4%* |
+| | NoCleanup | 0.5 *-6%* | 1.2 *+0%* | 3.7 *-30%* | 5.4 *-23%* |
+| | Patterns | 0.5 *+0%* | 1.0 *-17%* | 2.8 *-23%* | 4.3 *-20%* |
+| **TPC-DS** | - | 1.6 | 3.3 | 17.8 | 22.7 |
+| | NoVerification | 1.6 *+0%* | 2.6 *-22%* | 12.9 *-27%* | 17.1 *-25%* |
+| | AsyncContext | 1.2 *-28%* | 2.6 *+2%* | 13.0 *+0%* | 16.8 *-2%* |
+| | NoCleanup | 1.2 *+0%* | 2.6 *+0%* | 8.6 *-34%* | 12.4 *-26%* |
+| | Patterns | 1.1 *-1%* | 2.1 *-19%* | 6.2 *-28%* | 9.5 *-23%* |
+
+</Table>
+</div>
+
+As <Ref id="mlir-speedup"/> shows, pre-initializing contexts cuts the SQL->MLIR phase by 28% to 45%, while running no verification steps in production and tuning the pattern application cut the optimization and lowering phases by 20-27% each. Lastly, avoiding canonicalization by using `createOrFold` further cuts the lowering phase by around 30%. Thus, by applying the techniques explained above, we can halve the time spent in the frontend compiler pipeline.
+
+
+### Comparison with our previous LLVM-Backend
+
+In contrast to the previous experiment, we now take a look at the compiler backend improvements.
+
+<div className="blog-table">
+<Table id="backend-latency" caption="Average backend compilation latency for TPC-H on x86-64 and aarch64">
+
+| | Backend | MLIR transform | Opt. | Code generation | Total compile |
+|---|---|---|---|---|---|
+| **x86-64** | MLIR-TPDE | 0.28 ms | 0.00 ms | 0.29 ms | 0.57 ms |
+| | LLVM O0 | 4.43 ms | 0.00 ms | 6.45 ms | 10.88 ms |
+| | LLVM Opt | 4.51 ms | 2.38 ms | 19.28 ms | 26.17 ms |
+| **aarch64** | MLIR-TPDE | 0.31 ms | 0.00 ms | 0.31 ms | 0.62 ms |
+| | LLVM O0 | 4.98 ms | 0.00 ms | 6.70 ms | 11.69 ms |
+| | LLVM Opt | 5.12 ms | 2.38 ms | 20.31 ms | 27.81 ms |
+
+</Table>
+</div>
+
+As <Ref id="backend-latency"/> shows, by avoiding the costly translation to LLVM-IR and faster TPDE tooling, our MLIR-TPDE backend can compile code in less than a ms. Looking at machine code generation alone, MLIR-TPDE needs 20x less time than LLVM O0 and 66x less than LLVM Opt. Over the whole backend, it is 16x to 19x faster than LLVM O0. The aarch64 numbers are close to the x86-64 ones, which is exactly the point of the snippet approach: we did not write a second backend to get them.
+
+More interesting than beating our own LLVM path is the comparison to a hand-written one. Hyper's custom backend needs 1.27ms on TPC-H and 2.61ms on TPC-DS, compared to 0.58ms and 1.55ms for MLIR-TPDE. So LingoDB generates code 41% to 54% faster than a custom backend that is built on a custom, latency-optimized IR, while we wrote almost none of the low-level code ourselves.
+
+
+### Comparison to other systems
+
+After looking at our changes in the compiler front- and backend, we now want to put our results into perspective with other systems.
+
+<Figure id="benchmark" caption="End-to-end Latency on x86 and AArch64. LingoDB (MLIR-TPDE) significantly reduces compilation overhead compared to the LLVM backend.">
+  <img
+    src="/img/blog/mlir-tpde/benchmark_latency_grid.svg"
+    alt="End-to-end Latency on x86 and AArch64.
+      LingoDB (MLIR-TPDE) significantly reduces compilation overhead compared to the LLVM backend."
+    className="tikz-canvas"
+  />
+</Figure>
+
+Overall, as <Ref id="benchmark"/> illustrates, our MLIR-TPDE backend compiles 7x faster compared to the LLVM backend, and now beats Hyper and DuckDB on end-to-end latency. In terms of execution speed, MLIR-TPDE matches LLVM Opt on scaling factor (SF) 1, but suffers from up to 26% slower execution times on SF10 datasets, where TPDE's `-O0` code quality starts to show once execution dominates. However, due to the way faster compilation, the total query latency shrinks across all datasets: SF1 finishes 3.2x faster, SF10 still at least 20% faster.
+
+While our backend is faster than Hyper's, our frontend is not. Hyper reaches an imperative representation 2.3x to 2.5x faster than we do, and most of that gap comes from the lowering phase, where we take around 3.5x longer. This is what our layered RelAlg -> SubOp -> Basic Ops design costs: it lets us reason about each optimization at the abstraction level that fits it, and we pay for it in frontend latency. Since both systems spend more time in the frontend than in the backend, Hyper still compiles faster overall, but executes slower than LingoDB. Umbra outperforms all tested systems, achieving the smallest compilation and execution times, at a significantly more complex code base. DuckDB, which avoids compilation at the cost of interpretation overhead, achieves good performance but is still slower than our MLIR-TPDE approach across all tested datasets.
+
+### Implementation effort
+
+While having great performance is awesome, a frequently overlooked aspect is the implementation effort and maintenance cost. Maintenance cost is hard to quantify, but we can at least give a brief overview on the implementation effort.
+
+<div className="blog-table">
+<Table id="impl-effort" caption="Lines of code of the MLIR-TPDE backend by component">
+
+| Component | Lines of Code |
+|---|---|
+| Target-independent adapter | 1922 |
+| LingoDB backend glue | 456 |
+| Snippets | 242 |
+| x86-specific | 249 |
+| aarch64-specific | 230 |
+| **Total** | **3099** |
+
+</Table>
+</div>
+
+When we take a look at the required lines of code (LOC) of the novel MLIR-TPDE compiler backend (<Ref id="impl-effort"/>), we notice that the vast majority is target-independent. The largest component is the platform-independent adapter (1922 lines), which bridges MLIR and TPDE, and compiles most operations through encoders generated from the Snippets (242 lines). The 456 lines of LingoDB backend glue bring MLIR into a form that TPDE can read, plus error handling. Only around 0.5k of the 3.1k lines are platform-specifics, like how to encode comparisons and conditional jumps.
+
+For comparison, Umbra's x86 and aarch64 backends are 5.3k and 8k LOC, or 13.3k together. We hit just slightly slower backend compilation speed with under a quarter of that. This is of course not a free lunch, as the complexity moved into TPDE, which has a core code base of around 17k lines. The difference is that TPDE is a separate, actively maintained project that is shared across all of its users, while an in-house backend is 13.3k lines that your own team has to port to every new architecture.
+
+## Reusing this in your system
+
+Lastly, we want to provide an overview of how to reuse this approach in your own system.
+
+If you use MLIR and want to keep LLVM, take the five techniques from above. They are mostly config changes and small refactors, and they halve the high-level compilation time.
+
+If you use MLIR and your pipeline eventually lowers to basic dialects like `arith`, `cf` or `func`, the MLIR-TPDE backend can be reused as well. Most parts of our TPDE integration carry over with minimal changes, by e.g. adding a few snippets and wiring them in the backend. The vast majority of the target-dependent code will also require barely any changes, given that it encodes comparisons and jump operations, which are required by most systems anyway.
+
+If you build a database system, even more of it is already done: Umbra-style 128bit variable-length strings, bit manipulation and hash-table specific implementations are already available in the MLIR-TPDE backend.
+
+### A tour of the source code
+
+The whole backend lives in [`src/execution/baseline`](https://github.com/lingo-db/lingo-db/tree/main/src/execution/baseline) and is around 3.5k lines of code. The table below describes what each file does and how much of it you would have to touch when porting the backend to another MLIR-based engine.
+
+| File | What it does | Porting effort |
+|---|---|---|
+| [`Adaptor.hpp`](https://github.com/lingo-db/lingo-db/blob/main/src/execution/baseline/Adaptor.hpp) | The IR adapter. Maps MLIR's `ModuleOp`, `Block`, `Operation` and `Value` onto the entities TPDE expects, enumerates functions and blocks, emulates φ-nodes from block arguments, and reports value liveness. | Almost none. It only depends on `func`, `cf` and MLIR core. |
+| [`snippets.c`](https://github.com/lingo-db/lingo-db/blob/main/src/execution/baseline/snippets.c) | Operation semantics as plain C functions, one per operation and bit width: `arith` integer and float math, loads and stores, and the LingoDB-specific primitives (128-bit varlen strings, hashing, tagged pointers, bit manipulation). EncodeGen turns them into encoder functions at build time. | Add your own operations here. Everything already present stays useful. |
+| [`CompilerBase.hpp`](https://github.com/lingo-db/lingo-db/blob/main/src/execution/baseline/CompilerBase.hpp) | The platform-independent backend and the bulk of the code. One method per supported operation, each calling the encoders generated from the snippets, plus address-expression building, calling conventions for runtime calls, and constant materialization. | Drop the methods for operations you do not have, add your own. The `arith`, `cf` and `func` handling carries over unchanged. |
+| [`CompilerX64.hpp`](https://github.com/lingo-db/lingo-db/blob/main/src/execution/baseline/CompilerX64.hpp), [`CompilerA64.hpp`](https://github.com/lingo-db/lingo-db/blob/main/src/execution/baseline/CompilerA64.hpp) | The target-specific layers, ~300 lines each. Integer comparison, conditional branches with comparison fusion, and loading global symbols through the GOT. | None in practice. Every engine needs comparisons and branches. |
+| [`BaselineBackend.cpp`](https://github.com/lingo-db/lingo-db/blob/main/src/execution/baseline/BaselineBackend.cpp) | The glue to LingoDB. Runs the `scf`-to-`cf` conversion, picks the backend for the host architecture, drives compilation, and calls the generated `main`. | Replace with your engine's equivalent entry point. |
+| [`Loader.hpp`](https://github.com/lingo-db/lingo-db/blob/main/src/execution/baseline/Loader.hpp) | Makes the emitted code callable. `InMemoryLoader` maps TPDE's ELF output into memory and resolves runtime symbols via `dlsym`, `DebugLoader` instead writes an object file and links it, so that generated code can be inspected. | Reusable as-is. |
+| [`CMakeLists.txt`](https://github.com/lingo-db/lingo-db/blob/main/src/execution/baseline/CMakeLists.txt) | The build wiring that makes snippets work: compile `snippets.c` to LLVM bitcode with Clang, then run `tpde_encodegen` on it to generate the encoder header. | Copy the two custom commands, change the snippet file name. |
+
+In combination, the MLIR-level tunings and the reusable MLIR-TPDE backend substantially reduce both compilation latency and implementation effort for low-latency, MLIR-based code generation.
+The source code of LingoDB is available on [GitHub](https://github.com/lingo-db/lingo-db).
+
+</NumberingProvider>

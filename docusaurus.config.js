@@ -32,6 +32,8 @@ const config = {
     locales: ['en'],
   },
 
+  plugins: ['docusaurus-plugin-image-zoom'],
+
   presets: [
     [
       'classic',
@@ -44,7 +46,11 @@ const config = {
           editUrl:
             'https://github.com/lingo-db/lingo-db.github.io/tree/main/',
         },
-        blog: false,
+        blog: {
+          blogTitle: 'LingoDB Blog',
+          blogDescription: 'A blog describing LingoDBs internals and recent publications',
+          postsPerPage: 'ALL',
+        },
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -75,6 +81,7 @@ const config = {
             position: 'left',
             label: 'Docs',
           },
+          {to: 'blog', label: 'Blog', position: 'left'}, // or position: 'right'
           {
             type: 'docsVersionDropdown',
             position: 'right',
@@ -119,6 +126,13 @@ const config = {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
       },
+      zoom: {
+              selector: '.container  img',
+              background: {
+                light: 'rgb(255, 255, 255)',
+                dark: 'rgb(50, 50, 50)'
+        },
+      }
     }),
 };
 

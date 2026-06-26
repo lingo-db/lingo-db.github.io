@@ -1,0 +1,39 @@
+.table {
+  margin: 1.5rem 0;
+}
+
+.figure {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.figure img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Horizontal scroll on narrow viewports without breaking the caption. */
+.scroll {
+  overflow-x: auto;
+}
+
+/* Infima renders tables as full-width blocks, which pins narrow tables to the
+   left edge. Shrink-wrap to the content instead so the table can be centered. */
+.scroll table {
+  display: table;
+  margin: 0 auto;
+  width: auto;
+}
+
+.caption {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.label {
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-800);
+}

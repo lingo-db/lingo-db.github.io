@@ -27,3 +27,40 @@
   --ifm-color-primary-lightest: #bad5f6;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+.tikz-canvas {
+  background-color: #ffffff !important;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #e3e3e3;
+  display: block;
+  margin: 1.5rem auto;
+  /* Ensures internal SVG text colors default to black if unspecified */
+  color: #000000 !important;
+}
+
+/* center blog tables */
+.blog-table {
+  display: flex;
+  justify-content: center;
+}
+
+/* Re-balance the grid columns */
+.main-wrapper .container .row {
+  /* Left Sidebar (Archive navigation list) */
+  .col--3 {
+    --ifm-col-width: 18%;
+    padding-right: 1.5rem;
+  }
+
+  /* Center Column (Your actual Blog Post content) */
+  .col--7 {
+    --ifm-col-width: 66%;
+  }
+
+  /* Right Sidebar (Table of Contents) */
+  .col--2 {
+    --ifm-col-width: 16%;
+    padding-left: 0rem;
+  }
+}

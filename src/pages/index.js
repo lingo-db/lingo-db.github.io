@@ -173,6 +173,18 @@ export default function Home() {
                         fontSize: "2.5em",
                         paddingBottom: "0.5em"
                     }}>Team</h1>
+                    <div className={styles.hiringCallout}>
+                        <h2>📢 I'm hiring a PhD student @ Aalto University, Finland</h2>
+                        <p>
+                            Starting September 2026, I (Michael) will join Aalto University as a tenure-track
+                            professor while remaining project lead of LingoDB. I'm looking for a motivated PhD
+                            student to work at the intersection of data systems, compilers, systems, and hardware, typically involving LingoDB.
+                            If this sounds like you, get in touch!
+                        </p>
+                        <a className='button button--primary button--lg'
+                           href='mailto:info@lingo-db.com?subject=PhD%20Position%20Application'
+                           target="_blank"><FontAwesomeIcon icon={faEnvelope}/> &nbsp; Apply / Get in Touch</a>
+                    </div>
                     <div className="container">
                         <div className='row'>
                             <div className="col col--4">
@@ -188,7 +200,7 @@ export default function Home() {
                                     <img style={{borderRadius: "75px"}} src='img/giceva_profile.jpg'
                                          height="150px"/>
                                     <h4 className="font-weight-bold">Prof. Dr. Jana Giceva</h4>
-                                    <h5>Advisor</h5>
+                                    <h5>Collaborator</h5>
                                 </a>
                             </div>
                             <div className="col col--4">
@@ -215,7 +227,7 @@ export default function Home() {
                                     <img style={{borderRadius: "75px"}}
                                          src='https://avatars.githubusercontent.com/u/56317626' height="100px"/>
                                     <h4 className="font-weight-bold">Moritz Bachmaier</h4>
-                                    <h5> Student Research Assistant<br/> Software Campus<br/> 04/2025 - today</h5>
+                                    <h5> Student Research Assistant<br/> Software Campus<br/> 04/2025 - 07/2026</h5>
                                 </a>
                             </div>
                             <div className="col col--2">
@@ -231,7 +243,7 @@ export default function Home() {
                                     <img style={{borderRadius: "75px"}}
                                          src='https://avatars.githubusercontent.com/u/92096842' height="100px"/>
                                     <h4 className="font-weight-bold">Jonas Ladner</h4>
-                                    <h5>Student Research Assistant<br/> Software Campus<br/> 11/2025 - today</h5>
+                                    <h5>Student Research Assistant<br/> Software Campus<br/> 11/2025 - 07/2026</h5>
                                 </a>
                             </div>
                             <div className="col col--2">
@@ -239,7 +251,7 @@ export default function Home() {
                                     <img style={{borderRadius: "75px"}}
                                          src='https://hehezhou.github.io//images/profile.png' height="100px"/>
                                     <h4 className="font-weight-bold">Hangrui Zhou</h4>
-                                    <h5>Intern<br/>Tsinghua University. <br/> 03/2025 - </h5>
+                                    <h5>Intern<br/>Tsinghua University. <br/> 03/2025 - 07/2026</h5>
                                 </a>
                             </div>
                             <div className="col col--2">

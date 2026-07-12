@@ -36,6 +36,19 @@ export const primaryPublications = [
         "CiteLink": "#",
         "Abstract": `While compiling query engines can be highly efficient, especially for complex queries, they also have the reputation of being too difficult to understand, debug, and profile. However, this is not necessarily the case if supported by the right architecture and tools.
 With this demonstration, we want to show this for our own compiling query engine LingoDB. For this purpose, we built an instrumentation and visualization framework called LingoDB-CT, which aggregates data from multiple angles and visualizes it to reveal the bigger picture. Through two interactive demonstration scenarios, using publicly hosted web applications, we show that LingoDB is indeed easy to understand and profile.`
+    },
+    {
+        "ID": "2026-adms-ladner",
+        "Title": "Maintainable, Low-Latency and High-Quality Query Compilation with MLIR and TPDE",
+        "Author": ["Jonas Ladner", "Lukas Döllerer", "Alexis Engelke", "Michael Jungmair"],
+        "Date": "2026-09-01",
+        "ConferenceAbbrv": "ADMS@VLDB 2026",
+        "ConferenceName": "17th International Workshop on Accelerating Analytics and Data Management Systems ... (ADMS 2026)",
+        "ConferenceLink": "https://adms-conf.org/",
+        "PDFLink": "https://db.in.tum.de/~jungmair/papers/adms-2026-fast-compilation.pdf",
+        "CiteLink": "#",
+        "Abstract": `Query compilation is an effective execution paradigm, particularly for complex queries, diverse workloads, and heterogeneous hardware. The MLIR compiler framework has recently been adopted to build compiling query engines due to it being specifically designed to lower the engineering effort while still generating efficient code. However, MLIR-based engines incur compilation latencies of 50–150 ms for typical analytical SQL queries, which dominate end-to-end latency on smaller datasets.
+            We address this with two contributions: First, we introduce a low-latency MLIR compilation backend based on TPDE that bypasses the LLVM lowering and compilation pipeline. Second, we propose techniques that reduce MLIR's intrinsic overhead. We integrate both into LingoDB, our MLIR-based query engine, and evaluate them on the TPC-H and TPC-DS benchmarks. The new compilation backend generates machine code up to 66x faster, even outperforming Hyper's compilation backend, and our techniques reduce MLIR's overhead by more than 2x. Together, this allows LingoDB to achieve lower end-to-end query latencies than Hyper and DuckDB, even at scale factor 1.`
     }
 ]
 

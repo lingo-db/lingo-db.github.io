@@ -215,7 +215,7 @@ export default function Home() {
                         <div className='row text--center'>
                             <h2 style={{width: "100%"}}></h2>
                             <div className="col col--2">
-                                <a href='https://github.com/moba15' target="_blank" id="tile">
+                                <a href='https://db.in.tum.de/people/sites/morozov/' target="_blank" id="tile">
                                     <img style={{borderRadius: "75px"}}
                                          src='/img/mykola.jpg' height="100px"/>
                                     <h4 className="font-weight-bold">Mykola Morozov</h4>

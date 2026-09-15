@@ -99,19 +99,6 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Legal',
-            items: [
-              {
-                label: 'Imprint',
-                href: '/imprint',
-              },
-              {
-                label: 'Privacy',
-                href: 'https://db.in.tum.de/contact/datenschutz.shtml',
-              }
-            ],
-          },
-          {
             title: 'More',
             items: [
               {

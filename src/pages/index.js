@@ -176,7 +176,7 @@ export default function Home() {
                     <div className={styles.hiringCallout}>
                         <h2>📢 I'm hiring a PhD student @ Aalto University, Finland</h2>
                         <p>
-                            Starting September 2026, I (Michael) will join Aalto University as a tenure-track
+                           I (Michael) recently join Aalto University as a tenure-track
                             professor while remaining project lead of LingoDB. I'm looking for a motivated PhD
                             student to work at the intersection of data systems, compilers, systems, and hardware, typically involving LingoDB.
                             If this sounds like you, get in touch!
@@ -191,7 +191,7 @@ export default function Home() {
                                 <a href='https://jungmair.dev' target="_blank" id="tile">
                                     <img style={{borderRadius: "75px"}} src='/img/jungmair.jpg' height="150px"/>
                                     <h4 className="font-weight-bold">Michael Jungmair</h4>
-                                    <h5>Project Lead</h5>
+                                    <h5>Project Lead<br/>Aalto University</h5>
                                 </a>
                             </div>
 
@@ -200,7 +200,7 @@ export default function Home() {
                                     <img style={{borderRadius: "75px"}} src='img/giceva_profile.jpg'
                                          height="150px"/>
                                     <h4 className="font-weight-bold">Prof. Dr. Jana Giceva</h4>
-                                    <h5>Collaborator</h5>
+                                    <h5>Collaborator<br/>Technical University of Munich</h5>
                                 </a>
                             </div>
                             <div className="col col--4">
@@ -208,7 +208,7 @@ export default function Home() {
                                     <img style={{borderRadius: "75px"}} className='rounded-circle mb-4'
                                          src='img/engelke.png' height="150px"/>
                                     <h4 className="font-weight-bold">Dr. Alexis Engelke</h4>
-                                    <h5>Collaborator</h5>
+                                    <h5>Collaborator<br/>Inria</h5>
                                 </a>
                             </div>
                         </div>
